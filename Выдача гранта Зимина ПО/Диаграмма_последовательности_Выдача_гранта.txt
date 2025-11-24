@@ -1,3 +1,4 @@
+
 @startuml
 actor "Инвестор" as Investor
 participant "UI" as UI
