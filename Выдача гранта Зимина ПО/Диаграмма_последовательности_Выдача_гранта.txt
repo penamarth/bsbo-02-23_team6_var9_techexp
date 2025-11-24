@@ -1,4 +1,6 @@
 
+
+
 @startuml
 actor "Инвестор" as Investor
 participant "UI" as UI
@@ -6,61 +8,39 @@ participant "GrantIssuanceFacade" as Facade
 participant "AuthorizationService" as AuthService
 participant "IGrantApplicationRepository" as AppRepo
 participant "IApplicantRepository" as ApplicantRepo
-participant "ExpertiseService" as ExpertiseService
-participant "IGrantDecisionRepository" as DecisionRepo
 participant "NotificationService" as NotifyService
 participant "AccountingService" as AccountingService
-participant "IPaymentRepository" as PaymentRepo
 participant "Database" as DB
 
-Investor -> UI: Принять решение по заявке
-UI -> Facade: ProcessGrantDecision(applicationId, decision, amount)
+Investor -> UI: Выдача гранта
+UI -> Facade: ProcessGrantIssuance(applicationId: uint)
 
-Facade -> AuthService: ValidateAccess(investorId, "GRANT_DECISION")
+Facade -> AuthService: ValidateAccess(investorId: uint)
 AuthService --> Facade: AccessGranted
 
-Facade -> AppRepo: FindById(applicationId)
+Facade -> AppRepo: FindById(applicationId: uint)
 AppRepo -> DB: SELECT * FROM grant_applications WHERE id = applicationId
 DB --> AppRepo: Application data
 AppRepo --> Facade: GrantApplication object
 
-Facade -> ExpertiseService: GetExpertiseResult(applicationId)
-ExpertiseService --> Facade: expertiseScore, recommendations
+Facade -> ApplicantRepo: FindById(applicantId: uint)
+ApplicantRepo -> DB: SELECT * FROM applicants WHERE id = applicantId
+DB --> ApplicantRepo: Applicant data
+ApplicantRepo --> Facade: Applicant object
 
-Facade -> DecisionRepo: SaveDecision(applicationId, decision, amount, comments)
-DecisionRepo -> DB: INSERT INTO grant_decisions (values)
-DB --> DecisionRepo: Decision data
-DecisionRepo --> Facade: GrantDecision object
+Facade -> AccountingService: ProcessPayment(applicantId: uint, amount: decimal)
+AccountingService -> DB: INSERT INTO payments (applicantId, amount, status)
+DB --> AccountingService: Payment recorded
+AccountingService --> Facade: Payment processed
 
-alt decision == APPROVED
-    Facade -> ApplicantRepo: FindById(applicantId)
-    ApplicantRepo -> DB: SELECT * FROM applicants WHERE id = applicantId
-    DB --> ApplicantRepo: Applicant data
-    ApplicantRepo --> Facade: Applicant object
-    
-    Facade -> AccountingService: ProcessPayment(applicantId, amount)
-    AccountingService -> PaymentRepo: SavePayment(applicationId, amount)
-    PaymentRepo -> DB: INSERT INTO payments (values)
-    DB --> PaymentRepo: Payment data
-    PaymentRepo --> AccountingService: Payment object
-    
-    AccountingService --> Facade: Payment processed
-    
-    Facade -> NotifyService: NotifyApplicant(applicantId, "Грант одобрен")
-    NotifyService --> Facade: Notification sent
-    
-    Facade -> NotifyService: NotifyInvestor(investorId, "Решение принято")
-    NotifyService --> Facade: Notification sent
-else decision == REJECTED
-    Facade -> NotifyService: NotifyApplicant(applicantId, "Грант отклонен")
-    NotifyService --> Facade: Notification sent
-end
+Facade -> AppRepo: UpdateStatus(applicationId: uint, "GrantIssued")
+AppRepo -> DB: UPDATE grant_applications SET status = 'GrantIssued'
+DB --> AppRepo: Status updated
+AppRepo --> Facade: Status updated
 
-Facade -> AppRepo: Update(application)
-AppRepo -> DB: UPDATE grant_applications SET status = new_status
-DB --> AppRepo: Update confirmed
-AppRepo --> Facade: Application updated
+Facade -> NotifyService: Notify(applicantId, "Грант выплачен")
+NotifyService --> Facade: Notification sent
 
-Facade -> UI: Decision processing result
-UI --> Investor: Отображает результат операции
+Facade -> UI: Grant issuance completed
+UI --> Investor: Грант успешно выдан
 @enduml
