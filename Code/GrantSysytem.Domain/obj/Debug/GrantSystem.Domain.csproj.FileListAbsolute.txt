@@ -1,0 +1,6 @@
+C:\WorkSpace\Projects\GrantSysytem.Domain\bin\Debug\GrantSysytem.Domain.dll
+C:\WorkSpace\Projects\GrantSysytem.Domain\bin\Debug\GrantSysytem.Domain.pdb
+C:\WorkSpace\Projects\GrantSysytem.Domain\obj\Debug\GrantSystem.Domain.csproj.AssemblyReference.cache
+C:\WorkSpace\Projects\GrantSysytem.Domain\obj\Debug\GrantSystem.Domain.csproj.CoreCompileInputs.cache
+C:\WorkSpace\Projects\GrantSysytem.Domain\obj\Debug\GrantSysytem.Domain.dll
+C:\WorkSpace\Projects\GrantSysytem.Domain\obj\Debug\GrantSysytem.Domain.pdb
