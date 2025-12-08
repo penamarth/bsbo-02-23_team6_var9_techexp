@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GrantSysytem.Domain
+﻿namespace GrantSysytem.Domain
 {
     public class Review
     {
@@ -8,6 +6,9 @@ namespace GrantSysytem.Domain
         public float Score { get; set; }
         public string Comment { get; set; }
         public DateTime SubmissionDate { get; set; }
+        
+        public int ApplicationId { get; set; } // Связь с GrantApplication
+        public int ExpertId { get; set; }     // Связь с Expert
 
         public void Submit()
         {

@@ -10,7 +10,10 @@ namespace GrantSystem.Repositories
         {
             throw new System.NotImplementedException();
         }
-
+        public List<Review> findByApplication(int applicationId)
+        {
+            return new List<Review>();
+        }
         public Review findById(int id)
         {
             throw new System.NotImplementedException();
