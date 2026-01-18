@@ -21,11 +21,25 @@ namespace GrantSystem.UI
                 statsService
             );
 
+            var expert = new Expert()
+            {
+                Id = 1,
+                Name = "Николай",
+                Role = "Эксперт"
+            };
+
+            var applicant = new Applicant()
+            {
+                Id = 2,
+                Name = "Иван",
+                Role = "Заявитель"
+            };
+
             Console.WriteLine("======== УПРАВЛЕНЕИ ЗАЯВКОЙ ========");
 
             Console.WriteLine("\n======== Создание заявки (CreateApplication) ========");
 
-            GrantApplication newApplication = facade.CreateApplication(1, new GrantApplication
+            GrantApplication newApplication = facade.CreateApplication(applicant.Id, new GrantApplication
             {
                 Title = "Новая заявка на грант",
                 Description = "Grant for scientific research project.",
@@ -56,7 +70,7 @@ namespace GrantSystem.UI
 
             Console.WriteLine("\n======== Создание Review на грант (SubmitReview) ========");
 
-            var applicationWithReview = facade.SubmitReview(1, 10, "Хорошая идея для гранта", applicationData.Id);
+            var applicationWithReview = facade.SubmitReview(expert.Id, 10, "Хорошая идея для гранта", applicationData.Id);
 
             Console.WriteLine($"Review на грант Id={applicationWithReview.Id}.\n" +
                 $"Комментарий={applicationWithReview.reviews.FirstOrDefault()?.Comment}\n" +
