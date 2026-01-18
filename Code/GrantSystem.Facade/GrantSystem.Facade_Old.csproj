@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\GrantSystem</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GrantSystem.Interfaces\GrantSystem.Interfaces.csproj" />
+    <ProjectReference Include="..\GrantSystem.Repositories\GrantSystem.Repositories.csproj" />
+    <ProjectReference Include="..\GrantSystem.Services\GrantSystem.Services.csproj" />
+    <ProjectReference Include="..\GrantSysytem.Domain\GrantSystem.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

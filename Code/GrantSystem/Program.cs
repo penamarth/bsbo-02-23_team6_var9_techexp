@@ -1,25 +1,14 @@
-﻿using GrantSystem.Repositories;
-using GrantSystem.Services;
+﻿using GrantSystem.Interfaces;
+using GrantSysytem.Domain;
 
-namespace GrantSystem
+namespace GrantSystem.UI
 {
     class Program
     {
         static void Main(string[] args)
         {
+            IUserRepository<BaseUser> userRepository = new UserRepositry();
 
-            var userRepo = new UserRepository();
-            var appRepo = new AppRepository();
-            var reviewRepo = new ReviewRepository();
-
-            var notifyService = new NotifyService();
-            
-            var facade = new GrantSystemFacade(
-                userRepo,   // IUserRepository
-                appRepo,    // IAppRepository  
-                reviewRepo, // IReviewRepository
-                notifyService // INotifyService
-            );
         }
     }
 }

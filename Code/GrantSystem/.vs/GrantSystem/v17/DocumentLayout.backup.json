@@ -1,24 +1,16 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\WorkSpace\\Projects\\GrantSystem\\",
+  "WorkspaceRootPath": "C:\\WorkSpace\\Projects\\bsbo-02-23_team6_var9_techexp\\Code\\GrantSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{205F4ED5-07F0-489B-A458-12270AF91CAD}|..\\GrantSystem.Repositories\\GrantSystem.Repositories.csproj|c:\\workspace\\projects\\grantsystem.repositories\\apprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E3F705FE-E72E-4928-BAF5-AC6227C88CAE}|..\\GrantSystem.UI\\GrantSystem.UI.csproj|c:\\workspace\\projects\\bsbo-02-23_team6_var9_techexp\\code\\grantsystem.ui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{205F4ED5-07F0-489B-A458-12270AF91CAD}|..\\GrantSystem.Repositories\\GrantSystem.Repositories.csproj|c:\\workspace\\projects\\grantsystem.repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4D7950D6-E712-4D8C-86F6-F2EA538DE128}|GrantSystem.Facade\\GrantSystem.Facade.csproj|c:\\workspace\\projects\\bsbo-02-23_team6_var9_techexp\\code\\grantsystem\\grantsystem.facade\\grantsystemfacade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D7950D6-E712-4D8C-86F6-F2EA538DE128}|GrantSystem.Facade\\GrantSystem.Facade.csproj|solutionrelative:grantsystem.facade\\grantsystemfacade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{205F4ED5-07F0-489B-A458-12270AF91CAD}|..\\GrantSystem.Repositories\\GrantSystem.Repositories.csproj|c:\\workspace\\projects\\grantsystem.repositories\\reviewrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1806C82E-0E36-4F20-98CC-542DCD88A22E}|..\\GrantSystem.Interfaces\\GrantSystem.Interfaces.csproj|c:\\workspace\\projects\\grantsystem.interfaces\\ireviewrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1806C82E-0E36-4F20-98CC-542DCD88A22E}|..\\GrantSystem.Interfaces\\GrantSystem.Interfaces.csproj|c:\\workspace\\projects\\grantsystem.interfaces\\iapprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1806C82E-0E36-4F20-98CC-542DCD88A22E}|..\\GrantSystem.Interfaces\\GrantSystem.Interfaces.csproj|c:\\workspace\\projects\\grantsystem.interfaces\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{205F4ED5-07F0-489B-A458-12270AF91CAD}|..\\GrantSystem.Repositories\\GrantSystem.Repositories.csproj|c:\\workspace\\projects\\bsbo-02-23_team6_var9_techexp\\code\\grantsystem.repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,81 +23,47 @@
           "SelectedChildIndex": 1,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\WorkSpace\\Projects\\bsbo-02-23_team6_var9_techexp\\Code\\GrantSystem.Repositories\\UserRepository.cs",
+              "RelativeDocumentMoniker": "..\\GrantSystem.Repositories\\UserRepository.cs",
+              "ToolTip": "C:\\WorkSpace\\Projects\\bsbo-02-23_team6_var9_techexp\\Code\\GrantSystem.Repositories\\UserRepository.cs",
+              "RelativeToolTip": "..\\GrantSystem.Repositories\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvxAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-18T12:20:20.586Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AppRepository.cs",
-              "DocumentMoniker": "C:\\WorkSpace\\Projects\\GrantSystem.Repositories\\AppRepository.cs",
-              "RelativeDocumentMoniker": "..\\GrantSystem.Repositories\\AppRepository.cs",
-              "ToolTip": "C:\\WorkSpace\\Projects\\GrantSystem.Repositories\\AppRepository.cs",
-              "RelativeToolTip": "..\\GrantSystem.Repositories\\AppRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\WorkSpace\\Projects\\bsbo-02-23_team6_var9_techexp\\Code\\GrantSystem.UI\\Program.cs",
+              "RelativeDocumentMoniker": "..\\GrantSystem.UI\\Program.cs",
+              "ToolTip": "C:\\WorkSpace\\Projects\\bsbo-02-23_team6_var9_techexp\\Code\\GrantSystem.UI\\Program.cs",
+              "RelativeToolTip": "..\\GrantSystem.UI\\Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABsAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T20:41:56.354Z",
+              "WhenOpened": "2026-01-18T12:17:21.008Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "UserRepository.cs",
-              "DocumentMoniker": "C:\\WorkSpace\\Projects\\GrantSystem.Repositories\\UserRepository.cs",
-              "RelativeDocumentMoniker": "..\\GrantSystem.Repositories\\UserRepository.cs",
-              "ToolTip": "C:\\WorkSpace\\Projects\\GrantSystem.Repositories\\UserRepository.cs",
-              "RelativeToolTip": "..\\GrantSystem.Repositories\\UserRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAANAAAAAAAAAA==",
+              "Title": "GrantSystemFacade.cs",
+              "DocumentMoniker": "C:\\WorkSpace\\Projects\\bsbo-02-23_team6_var9_techexp\\Code\\GrantSystem\\GrantSystem.Facade\\GrantSystemFacade.cs",
+              "RelativeDocumentMoniker": "GrantSystem.Facade\\GrantSystemFacade.cs",
+              "ToolTip": "C:\\WorkSpace\\Projects\\bsbo-02-23_team6_var9_techexp\\Code\\GrantSystem\\GrantSystem.Facade\\GrantSystemFacade.cs",
+              "RelativeToolTip": "GrantSystem.Facade\\GrantSystemFacade.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAqwDEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T20:40:45.822Z"
+              "WhenOpened": "2026-01-18T12:16:00.495Z",
+              "EditorCaption": ""
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ReviewRepository.cs",
-              "DocumentMoniker": "C:\\WorkSpace\\Projects\\GrantSystem.Repositories\\ReviewRepository.cs",
-              "RelativeDocumentMoniker": "..\\GrantSystem.Repositories\\ReviewRepository.cs",
-              "ToolTip": "C:\\WorkSpace\\Projects\\GrantSystem.Repositories\\ReviewRepository.cs",
-              "RelativeToolTip": "..\\GrantSystem.Repositories\\ReviewRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T20:39:19.594Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IReviewRepository.cs",
-              "DocumentMoniker": "C:\\WorkSpace\\Projects\\GrantSystem.Interfaces\\IReviewRepository.cs",
-              "RelativeDocumentMoniker": "..\\GrantSystem.Interfaces\\IReviewRepository.cs",
-              "ToolTip": "C:\\WorkSpace\\Projects\\GrantSystem.Interfaces\\IReviewRepository.cs",
-              "RelativeToolTip": "..\\GrantSystem.Interfaces\\IReviewRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwUAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T20:38:16.147Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "IAppRepository.cs",
-              "DocumentMoniker": "C:\\WorkSpace\\Projects\\GrantSystem.Interfaces\\IAppRepository.cs",
-              "RelativeDocumentMoniker": "..\\GrantSystem.Interfaces\\IAppRepository.cs",
-              "ToolTip": "C:\\WorkSpace\\Projects\\GrantSystem.Interfaces\\IAppRepository.cs",
-              "RelativeToolTip": "..\\GrantSystem.Interfaces\\IAppRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwgAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T20:36:20.362Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IUserRepository.cs",
-              "DocumentMoniker": "C:\\WorkSpace\\Projects\\GrantSystem.Interfaces\\IUserRepository.cs",
-              "RelativeDocumentMoniker": "..\\GrantSystem.Interfaces\\IUserRepository.cs",
-              "ToolTip": "C:\\WorkSpace\\Projects\\GrantSystem.Interfaces\\IUserRepository.cs",
-              "RelativeToolTip": "..\\GrantSystem.Interfaces\\IUserRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T20:29:02.702Z"
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             }
           ]
         },
@@ -113,10 +71,6 @@
           "DockedWidth": 200,
           "SelectedChildIndex": -1,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
@@ -136,6 +90,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
             }
           ]
         }

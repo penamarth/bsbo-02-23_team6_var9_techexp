@@ -4,24 +4,32 @@ using System;
 
 namespace GrantSystem.Repositories
 {
-    public class UserRepository : IUserRepository<BaseUser>
+    public class UserRepository<T> : IUserRepository<T> where T : BaseUser, new()
     {
         public void delete(BaseUser user)
         {
             throw new NotImplementedException();
         }
 
-        public BaseUser findByEmail(string email)
+        public T findByEmail(string email)
         {
             throw new NotImplementedException();
         }
 
-        public BaseUser findById(int id)
+        public T findById(int id)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("=== Вызов UserRepository.findById() ===");
+
+            return new T
+            {
+                Id = id,
+                Name = "Иван Иванов",
+                Role = "Applicant",
+                PasswordHash = "hashed_password"
+            };
         }
 
-        public BaseUser save(BaseUser user)
+        public T save(BaseUser user)
         {
             throw new NotImplementedException();
         }

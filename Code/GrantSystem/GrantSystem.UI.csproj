@@ -49,5 +49,27 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrantSystem.Facade\GrantSystem.Facade.csproj">
+      <Project>{3acdb3ee-5cd9-4292-a002-2fbb329eff2d}</Project>
+      <Name>GrantSystem.Facade</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrantSystem.Interfaces\GrantSystem.Interfaces.csproj">
+      <Project>{1806c82e-0e36-4f20-98cc-542dcd88a22e}</Project>
+      <Name>GrantSystem.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrantSystem.Repositories\GrantSystem.Repositories.csproj">
+      <Project>{205f4ed5-07f0-489b-a458-12270af91cad}</Project>
+      <Name>GrantSystem.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrantSystem.Services\GrantSystem.Services.csproj">
+      <Project>{c9a905f2-5d26-41ad-aef3-2a216071571b}</Project>
+      <Name>GrantSystem.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrantSysytem.Domain\GrantSystem.Domain.csproj">
+      <Project>{5876DDB2-DBEC-4888-BD32-4B6F661FAD27}</Project>
+      <Name>GrantSystem.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

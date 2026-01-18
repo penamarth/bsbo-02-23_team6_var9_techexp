@@ -1,4 +1,6 @@
-﻿namespace GrantSysytem.Domain
+﻿using System;
+
+namespace GrantSysytem.Domain
 {
     public class Review
     {

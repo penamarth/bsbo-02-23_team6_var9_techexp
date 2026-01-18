@@ -22,14 +22,23 @@ namespace GrantSystem.Repositories
             throw new NotImplementedException();
         }
 
-        public GrantApplication save(GrantApplication app)
+        public List<GrantApplication> findByStatus(string status)
         {
             throw new NotImplementedException();
         }
 
+        public GrantApplication save(GrantApplication app)
+        {
+            Console.WriteLine("=== Вызов AppRepository.save() ===");
+
+            return app;
+        }
+
         public GrantApplication update(GrantApplication app)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("=== Вызов AppRepository.update() ===");
+
+            return app;
         }
     }
 }

@@ -7,7 +7,6 @@ namespace GrantSystem.Interfaces
     {
         GrantApplication findById(int id);
         List<GrantApplication> findByApplicant(int id);
-         // НОВЫЙ МЕТОД для диаграммы последовательности
         List<GrantApplication> findByStatus(string status);
         
         GrantApplication save(GrantApplication app);
