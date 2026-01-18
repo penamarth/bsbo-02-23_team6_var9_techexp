@@ -28,13 +28,13 @@ namespace GrantSystem.UI
             });
             Console.WriteLine($"Создана заявка на грант: Id={newApplication.Id}, Title={newApplication.Title}, Status={newApplication.Status}");
 
-            Console.WriteLine("======== Верификация заявки ========");
+            Console.WriteLine("\n======== Верификация заявки ========");
 
             newApplication.Status = "ReadyForReview";
             GrantApplication updatedApplication = facade.UpdateGrantApplication(1, newApplication);
             Console.WriteLine($"Обновлена заявка на грант: Id={updatedApplication.Id}, Title={updatedApplication.Title}, Status={updatedApplication.Status}");
 
-            Console.WriteLine("======== Запрос общей статистики ========");
+            Console.WriteLine("\n======== Запрос общей статистики ========");
             ApplicationStats applicationStats = facade.getApplicationStats();
             Console.WriteLine($"Общая статистика: Total={applicationStats.TotalApplications}, Approved={applicationStats.ApprovedApplications}, Amount={applicationStats.TotalFundingAmount}, AvgScore={applicationStats.AverageScore}");
         }
