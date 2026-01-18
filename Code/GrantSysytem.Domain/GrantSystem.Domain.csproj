@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationStats.cs" />
+    <Compile Include="ExpertStats.cs" />
+    <Compile Include="GrantStats.cs" />
     <Compile Include="Grant.cs" />
     <Compile Include="GrantApplication.cs" />
     <Compile Include="Investor.cs" />

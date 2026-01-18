@@ -11,10 +11,13 @@ namespace GrantSystem.UI
         static void Main(string[] args)
         {
             IAppRepository appRepository = new AppRepository();
+            IUserRepository<Expert> expertRepository = new UserRepository<Expert>();
+            IStatsService statsService = new StatsService(appRepository, expertRepository);
             INotifyService notifyService = new NotifyService();
 
             var facade = new GrantSystemFacade(
                 appRepository,
+                statsService,
                 notifyService
             );
 
@@ -54,6 +57,10 @@ namespace GrantSystem.UI
             Console.WriteLine("\n======== Одобрение гранта (ApproveApplication) ========");
 
             facade.ApproveApplication(applicationData.Id);
+
+            Console.WriteLine("\n======== Запрос общей статистики ========");
+            ApplicationStats applicationStats = facade.getApplicationStats();
+            Console.WriteLine($"Общая статистика: Total={applicationStats.TotalApplications}, Approved={applicationStats.ApprovedApplications}, Amount={applicationStats.TotalFundingAmount}, AvgScore={applicationStats.AverageScore}");
         }
     }
 }

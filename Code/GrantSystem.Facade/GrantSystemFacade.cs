@@ -9,14 +9,17 @@ namespace GrantSystem.Facade
     public class GrantSystemFacade
     {
         private readonly IAppRepository _appRepository;
+        private readonly IStatsService _statsService;
         private readonly INotifyService _notifyService;
 
         public GrantSystemFacade(
             IAppRepository appRepository,
             INotifyService notifyService
+            IStatsService statsService
         )
         {
             _appRepository = appRepository;
+            _statsService = statsService;
             _notifyService = notifyService;
         }
 
@@ -90,6 +93,13 @@ namespace GrantSystem.Facade
             GrantApplication updatedApplication = _appRepository.update(grantApplication);
 
             _notifyService.sendNotification(grantApplication.ApplicantId, "Заявка ободрена");
+        }
+
+        public ApplicationStats getApplicationStats()
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.getApplicationStats() ===");
+
+            return _statsService.getApplicationStats();
         }
     }
 }
