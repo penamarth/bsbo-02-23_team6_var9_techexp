@@ -15,5 +15,9 @@ namespace GrantSystem.Interfaces
         long countByStatus(string status);
         double sumAmount();
         double calculateAverageScore();
+        int getInvestorGrants(string id);
+        double getInvestorTotal(string id);
+        double avgAmountByInvestor(string id);
+        int getUniqueApplicants(string id);
     }
 }

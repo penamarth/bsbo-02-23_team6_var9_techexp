@@ -40,7 +40,14 @@ namespace GrantSystem.Services
 
         public GrantStats getGrantStats(string investorId)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("=== Вызов StatsService.getGrantStats() ===");
+
+            int grants = _appRepo.getInvestorGrants(investorId);
+            double total = _appRepo.getInvestorTotal(investorId);
+            double avg = _appRepo.avgAmountByInvestor(investorId);
+            int applicants = _appRepo.getUniqueApplicants(investorId);
+
+            return new GrantStats(investorId, grants, total, avg, applicants);
         }
     }
 }

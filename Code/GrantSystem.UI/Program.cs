@@ -65,6 +65,10 @@ namespace GrantSystem.UI
             Console.WriteLine("\n======== Запрос персональной статистики ========");
             ExpertStats expertStats = facade.getExpertStats("123");
             Console.WriteLine($"Статистика эксперта: Id={expertStats.ExpertId}, Reviews={expertStats.ReviewsCompleted}, AvgScore={expertStats.AverageReviewScore}, Ranking={expertStats.Ranking}");
+
+            Console.WriteLine("\n======== Запрос финансовой статистики ========");
+            GrantStats grantStats = facade.getGrantStats("123");
+            Console.WriteLine($"Финансовая статистика: Id={grantStats.InvestorId}, Grants={grantStats.GrantsCount}, Total={grantStats.TotalAmount}, AvgAmount={grantStats.AverageAmount}, UniqueApplicants={grantStats.UniqueApplicants}");
         }
     }
 }

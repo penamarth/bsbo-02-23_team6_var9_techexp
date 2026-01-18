@@ -66,9 +66,37 @@ namespace GrantSystem.Repositories
 
         public double calculateAverageScore()
         {
-            Console.WriteLine("=== Вызов AppRepository.calculateAverageScore ===");
+            Console.WriteLine("=== Вызов AppRepository.calculateAverageScore() ===");
 
             return 8.2;
+        }
+
+        public int getInvestorGrants(string id)
+        {
+            Console.WriteLine("=== Вызов AppRepository.getInvestorGrants() ===");
+
+            return 15;
+        }
+
+        public double getInvestorTotal(string id)
+        {
+            Console.WriteLine("=== Вызов AppRepository.getInvestorTotal() ===");
+
+            return 1250000;
+        }
+
+        public double avgAmountByInvestor(string id)
+        {
+            Console.WriteLine("=== Вызов AppRepository.avgAmountByInvestor() ===");
+
+            return 83333;
+        }
+
+        public int getUniqueApplicants(string id)
+        {
+            Console.WriteLine("=== Вызов AppRepository.getUniqueApplicants() ===");
+
+            return 12;
         }
     }
 }

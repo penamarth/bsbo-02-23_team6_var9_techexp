@@ -108,5 +108,12 @@ namespace GrantSystem.Facade
 
             return _statsService.getExpertStats(expertId);
         }
+
+        public GrantStats getGrantStats(string investorId)
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.getGrantStats() ===");
+            
+            return _statsService.getGrantStats(investorId);
+        }
     }
 }
