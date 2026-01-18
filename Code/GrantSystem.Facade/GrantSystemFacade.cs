@@ -14,7 +14,7 @@ namespace GrantSystem.Facade
 
         public GrantSystemFacade(
             IAppRepository appRepository,
-            INotifyService notifyService
+            INotifyService notifyService,
             IStatsService statsService
         )
         {

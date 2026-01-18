@@ -17,8 +17,8 @@ namespace GrantSystem.UI
 
             var facade = new GrantSystemFacade(
                 appRepository,
-                statsService,
-                notifyService
+                notifyService,
+                statsService
             );
 
             Console.WriteLine("======== УПРАВЛЕНЕИ ЗАЯВКОЙ ========");
