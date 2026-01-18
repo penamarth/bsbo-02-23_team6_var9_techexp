@@ -1,6 +1,7 @@
 ﻿using GrantSystem.Facade;
 using GrantSystem.Interfaces;
 using GrantSystem.Repositories;
+using GrantSystem.Services;
 using GrantSysytem.Domain;
 
 namespace GrantSystem.UI
@@ -10,9 +11,12 @@ namespace GrantSystem.UI
         static void Main(string[] args)
         {
             IAppRepository appRepository = new AppRepository();
+            IUserRepository<Expert> expertRepository = new UserRepository<Expert>();
+            IStatsService statsService = new StatsService(appRepository, expertRepository);
 
             var facade = new GrantSystemFacade(
-                appRepository
+                appRepository,
+                statsService
             );
 
             Console.WriteLine("======== Создание заявки ========");
@@ -29,6 +33,10 @@ namespace GrantSystem.UI
             newApplication.Status = "ReadyForReview";
             GrantApplication updatedApplication = facade.UpdateGrantApplication(1, newApplication);
             Console.WriteLine($"Обновлена заявка на грант: Id={updatedApplication.Id}, Title={updatedApplication.Title}, Status={updatedApplication.Status}");
+
+            Console.WriteLine("======== Запрос общей статистики ========");
+            ApplicationStats applicationStats = facade.getApplicationStats();
+            Console.WriteLine($"Общая статистика: Total={applicationStats.TotalApplications}, Approved={applicationStats.ApprovedApplications}, Amount={applicationStats.TotalFundingAmount}, AvgScore={applicationStats.AverageScore}");
         }
     }
 }

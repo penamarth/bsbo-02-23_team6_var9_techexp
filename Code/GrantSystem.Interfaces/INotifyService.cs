@@ -1,4 +1,4 @@
-namespace GrantSystem.Interfaces
+﻿namespace GrantSystem.Interfaces
 {
     public interface INotifyService
     {

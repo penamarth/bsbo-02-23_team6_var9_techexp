@@ -10,3 +10,9 @@ C:\WorkSpace\Projects\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\obj
 C:\WorkSpace\Projects\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\obj\Debug\GrantSystem.Domain.csproj.CoreCompileInputs.cache
 C:\WorkSpace\Projects\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\obj\Debug\GrantSysytem.Domain.dll
 C:\WorkSpace\Projects\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\obj\Debug\GrantSysytem.Domain.pdb
+D:\Dev\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\bin\Debug\GrantSysytem.Domain.dll
+D:\Dev\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\bin\Debug\GrantSysytem.Domain.pdb
+D:\Dev\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\obj\Debug\GrantSystem.Domain.csproj.AssemblyReference.cache
+D:\Dev\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\obj\Debug\GrantSystem.Domain.csproj.CoreCompileInputs.cache
+D:\Dev\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\obj\Debug\GrantSysytem.Domain.dll
+D:\Dev\bsbo-02-23_team6_var9_techexp\Code\GrantSysytem.Domain\obj\Debug\GrantSysytem.Domain.pdb

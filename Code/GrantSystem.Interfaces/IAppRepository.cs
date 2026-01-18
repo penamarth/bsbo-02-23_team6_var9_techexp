@@ -12,5 +12,9 @@ namespace GrantSystem.Interfaces
         GrantApplication save(GrantApplication app);
         GrantApplication update(GrantApplication app);
         void delete(BaseUser user);
+        long countAll();
+        long countByStatus(string status);
+        double sumAmount();
+        double calculateAverageScore();
     }
 }

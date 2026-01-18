@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INotifyService.cs" />
     <Compile Include="IReviewRepository.cs" />
     <Compile Include="IAppRepository.cs" />
+    <Compile Include="IStatsService.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

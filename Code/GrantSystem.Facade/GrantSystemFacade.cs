@@ -8,12 +8,15 @@ namespace GrantSystem.Facade
     public class GrantSystemFacade
     {
         private readonly IAppRepository _appRepository;
+        private readonly IStatsService _statsService;
 
         public GrantSystemFacade(
-            IAppRepository appRepository
+            IAppRepository appRepository,
+            IStatsService statsService
         )
         {
             _appRepository = appRepository;
+            _statsService = statsService;
         }
 
         public GrantApplication CreateApplication(int applicantId, GrantApplication applicationData)
@@ -45,6 +48,13 @@ namespace GrantSystem.Facade
             var updatedApplication = _appRepository.update(updateApplicationData);
 
             return updatedApplication;
+        }
+
+        public ApplicationStats getApplicationStats()
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.getApplicationStats() ===");
+            
+            return _statsService.getApplicationStats();
         }
     }
 }
