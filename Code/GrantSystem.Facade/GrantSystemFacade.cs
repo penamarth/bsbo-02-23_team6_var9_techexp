@@ -2,6 +2,7 @@
 using GrantSystem.Repositories;
 using GrantSysytem.Domain;
 using System;
+using System.Collections.Generic;
 
 namespace GrantSystem.Facade
 {
@@ -9,14 +10,17 @@ namespace GrantSystem.Facade
     {
         private readonly IAppRepository _appRepository;
         private readonly IStatsService _statsService;
+        private readonly INotifyService _notifyService;
 
         public GrantSystemFacade(
             IAppRepository appRepository,
+            INotifyService notifyService,
             IStatsService statsService
         )
         {
             _appRepository = appRepository;
             _statsService = statsService;
+            _notifyService = notifyService;
         }
 
         public GrantApplication CreateApplication(int applicantId, GrantApplication applicationData)
@@ -50,10 +54,51 @@ namespace GrantSystem.Facade
             return updatedApplication;
         }
 
+        public void SubmitApplication(int applicantId)
+        {
+            GrantApplication grantApplication = _appRepository.findById(applicantId);
+
+            grantApplication.Status = "onReview";
+
+            GrantApplication updatedApplication = _appRepository.update(grantApplication);
+        }
+
+        public GrantApplication GetGrantApplication(int applicantId)
+        {
+            GrantApplication grantApplication = _appRepository.findById(applicantId);
+
+            // Мокаем данные гранта
+            grantApplication.Id = 1;
+            grantApplication.ApplicantId = 1;
+            grantApplication.Title = "Новая заявка на грант";
+            grantApplication.Description = "Grant for scientific research project.";
+            grantApplication.Status = "onReview";
+            grantApplication.reviews = new List<Review>();
+
+            return grantApplication;
+        }
+
+        public void ApproveApplication(int applicationId)
+        {
+            GrantApplication grantApplication = _appRepository.findById(applicationId);
+            
+            grantApplication.grant = new Grant()
+            {
+                Amount = 100000,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Status = "Approved"
+            };
+
+            GrantApplication updatedApplication = _appRepository.update(grantApplication);
+
+            _notifyService.sendNotification(grantApplication.ApplicantId, "Заявка ободрена");
+        }
+
         public ApplicationStats getApplicationStats()
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.getApplicationStats() ===");
-            
+
             return _statsService.getApplicationStats();
         }
     }

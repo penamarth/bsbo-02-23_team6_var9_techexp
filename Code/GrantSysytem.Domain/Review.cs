@@ -12,9 +12,5 @@ namespace GrantSysytem.Domain
         public int ApplicationId { get; set; } // Связь с GrantApplication
         public int ExpertId { get; set; }     // Связь с Expert
 
-        public void Submit()
-        {
-            Console.WriteLine("Рецензия успешно отправлена");
-        }
     }
 }

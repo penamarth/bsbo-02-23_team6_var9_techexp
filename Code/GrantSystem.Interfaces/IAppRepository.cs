@@ -8,7 +8,6 @@ namespace GrantSystem.Interfaces
         GrantApplication findById(int id);
         List<GrantApplication> findByApplicant(int id);
         List<GrantApplication> findByStatus(string status);
-        
         GrantApplication save(GrantApplication app);
         GrantApplication update(GrantApplication app);
         void delete(BaseUser user);
