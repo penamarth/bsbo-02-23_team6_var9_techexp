@@ -40,5 +40,33 @@ namespace GrantSystem.Repositories
 
             return app;
         }
+
+        public int countAll()
+        {
+            Console.WriteLine("== Вызов AppRepository.countAll() ===");
+
+            return 156;
+        }
+
+        public int countByStatus(string status)
+        {
+            Console.WriteLine("== Вызов AppRepository.countByStatus() ===");
+
+            return 42;
+        }
+
+        public int sumAmount()
+        {
+            Console.WriteLine("== Вызов AppRepository.sumAmount() ===");
+
+            return 1250000;
+        }
+
+        public float calculateAverageScore()
+        {
+            Console.WriteLine("== Вызов AppRepository.calculateAverageScore ===");
+
+            return 8.2F;
+        }
     }
 }
