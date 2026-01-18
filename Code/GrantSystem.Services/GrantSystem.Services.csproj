@@ -41,7 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NotifyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrantSystem.Interfaces\GrantSystem.Interfaces.csproj">
+      <Project>{1806c82e-0e36-4f20-98cc-542dcd88a22e}</Project>
+      <Name>GrantSystem.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrantSystem.Repositories\GrantSystem.Repositories.csproj">
+      <Project>{205f4ed5-07f0-489b-a458-12270af91cad}</Project>
+      <Name>GrantSystem.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrantSysytem.Domain\GrantSystem.Domain.csproj">
+      <Project>{5876ddb2-dbec-4888-bd32-4b6f661fad27}</Project>
+      <Name>GrantSystem.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

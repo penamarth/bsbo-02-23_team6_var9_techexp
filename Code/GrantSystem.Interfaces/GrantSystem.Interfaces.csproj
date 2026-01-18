@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INotifyService.cs" />
     <Compile Include="IReviewRepository.cs" />
     <Compile Include="IAppRepository.cs" />
     <Compile Include="IUserRepository.cs" />
