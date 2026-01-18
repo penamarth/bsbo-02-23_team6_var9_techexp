@@ -1,6 +1,7 @@
 ﻿using GrantSystem.Facade;
 using GrantSystem.Interfaces;
 using GrantSystem.Repositories;
+using GrantSystem.Services;
 using GrantSysytem.Domain;
 
 namespace GrantSystem.UI
@@ -10,25 +11,49 @@ namespace GrantSystem.UI
         static void Main(string[] args)
         {
             IAppRepository appRepository = new AppRepository();
+            INotifyService notifyService = new NotifyService();
 
             var facade = new GrantSystemFacade(
-                appRepository
+                appRepository,
+                notifyService
             );
 
-            Console.WriteLine("======== Создание заявки ========");
+            Console.WriteLine("======== УПРАВЛЕНЕИ ЗАЯВКОЙ ========");
+
+            Console.WriteLine("\n======== Создание заявки (CreateApplication) ========");
 
             GrantApplication newApplication = facade.CreateApplication(1, new GrantApplication
             {
                 Title = "Новая заявка на грант",
-                Description = "Grant for scientific research project."
+                Description = "Grant for scientific research project.",
+                grant = new Grant()
             });
             Console.WriteLine($"Создана заявка на грант: Id={newApplication.Id}, Title={newApplication.Title}, Status={newApplication.Status}");
 
-            Console.WriteLine("======== Верификация заявки ========");
+            Console.WriteLine("\n======== Верификация заявки (UpdateGrantApplication) ========");
 
             newApplication.Status = "ReadyForReview";
             GrantApplication updatedApplication = facade.UpdateGrantApplication(1, newApplication);
             Console.WriteLine($"Обновлена заявка на грант: Id={updatedApplication.Id}, Title={updatedApplication.Title}, Status={updatedApplication.Status}");
+
+            Console.WriteLine("\n======== Отпрака на экспертизу (SubmitApplication) ========");
+
+            facade.SubmitApplication(newApplication.ApplicantId);
+
+            Console.WriteLine($"Заявка Id={updatedApplication.Id} отправлена на экпертизу");
+
+            Console.WriteLine("\n======== Экпертиза и просмотр статуса (GetGrantApplication) ========");
+
+            GrantApplication applicationData = facade.GetGrantApplication(newApplication.Id);
+            Console.WriteLine($"Просмотр экпертизы  " +
+                $"Id={applicationData.Id}, " +
+                $"Title={applicationData.Title}, " +
+                $"Status={applicationData.Status}, " +
+                $"Review={applicationData.reviews.Count()}");
+
+            Console.WriteLine("\n======== Одобрение гранта (ApproveApplication) ========");
+
+            facade.ApproveApplication(applicationData.Id);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GrantSysytem.Domain
 {
@@ -11,9 +12,7 @@ namespace GrantSysytem.Domain
         public DateTime SubmissionDate { get; set; }
         public int ApplicantId { get; set; }
 
-        public void Submit()
-        {
-            Console.Write("GrantApplication отправлена на экпертизу");
-        }
+        public List<Review> reviews { get; set; }
+        public Grant grant { get; set; }
     }
 }

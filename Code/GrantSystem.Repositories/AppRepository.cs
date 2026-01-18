@@ -19,7 +19,9 @@ namespace GrantSystem.Repositories
 
         public GrantApplication findById(int id)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("=== Вызов AppRepository.findById() ===");
+
+            return new GrantApplication();
         }
 
         public List<GrantApplication> findByStatus(string status)
