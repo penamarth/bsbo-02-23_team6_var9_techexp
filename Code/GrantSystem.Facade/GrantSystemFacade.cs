@@ -56,15 +56,22 @@ namespace GrantSystem.Facade
 
         public void SubmitApplication(int applicantId)
         {
+            Console.WriteLine("=== Вызов GrantSystemFacade.SubmitApplication() ===");
+
             GrantApplication grantApplication = _appRepository.findById(applicantId);
 
             grantApplication.Status = "onReview";
 
             GrantApplication updatedApplication = _appRepository.update(grantApplication);
+
+            _notifyService.sendNotification(grantApplication.ApplicantId, "Заявка успешно принята к рассмотрению");
+            _notifyService.sendNotification(new List<int>() { 1, 2, 3}, "Новая заявка для экпертизы");
         }
 
         public GrantApplication GetGrantApplication(int applicantId)
         {
+            Console.WriteLine("=== Вызов GrantSystemFacade.GetGrantApplication() ===");
+
             GrantApplication grantApplication = _appRepository.findById(applicantId);
 
             // Мокаем данные гранта
@@ -80,6 +87,8 @@ namespace GrantSystem.Facade
 
         public void ApproveApplication(int applicationId)
         {
+            Console.WriteLine("=== Вызов GrantSystemFacade.ApproveApplication() ===");
+
             GrantApplication grantApplication = _appRepository.findById(applicationId);
             
             grantApplication.grant = new Grant()
@@ -93,6 +102,29 @@ namespace GrantSystem.Facade
             GrantApplication updatedApplication = _appRepository.update(grantApplication);
 
             _notifyService.sendNotification(grantApplication.ApplicantId, "Заявка ободрена");
+        }
+
+        public GrantApplication SubmitReview(int expertId, int score, string comment, int applicationId)
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.SubmitReview() ===");
+
+            GrantApplication grantApplication = _appRepository.findById(applicationId);
+
+            grantApplication.reviews = new List<Review>()
+            {
+                new Review()
+                {
+                    Id  = 1,
+                    SubmissionDate = DateTime.Now,
+                    Comment = comment,
+                    Score = score,
+                    ExpertId = expertId
+                }
+            };
+
+            GrantApplication updatedApplication = _appRepository.update(grantApplication);
+
+            return grantApplication;
         }
 
         public ApplicationStats getApplicationStats()

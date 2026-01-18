@@ -21,7 +21,7 @@ namespace GrantSystem.Repositories
         {
             Console.WriteLine("=== Вызов AppRepository.findById() ===");
 
-            return new GrantApplication();
+            return new GrantApplication() { Id = id};
         }
 
         public List<GrantApplication> findByStatus(string status)

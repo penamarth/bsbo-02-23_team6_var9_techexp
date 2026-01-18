@@ -54,9 +54,19 @@ namespace GrantSystem.UI
                 $"Status={applicationData.Status}, " +
                 $"Review={applicationData.reviews.Count()}");
 
+            Console.WriteLine("\n======== Создание Review на грант (SubmitReview) ========");
+
+            var applicationWithReview = facade.SubmitReview(1, 10, "Хорошая идея для гранта", applicationData.Id);
+
+            Console.WriteLine($"Review на грант Id={applicationWithReview.Id}.\n" +
+                $"Комментарий={applicationWithReview.reviews.FirstOrDefault()?.Comment}\n" +
+                $"Score={applicationWithReview.reviews.FirstOrDefault()?.Score}");
+
             Console.WriteLine("\n======== Одобрение гранта (ApproveApplication) ========");
 
             facade.ApproveApplication(applicationData.Id);
+
+            Console.WriteLine("\n======== СТАТИСТИКА ГРАНТА ========");
 
             Console.WriteLine("\n======== Запрос общей статистики ========");
             ApplicationStats applicationStats = facade.getApplicationStats();

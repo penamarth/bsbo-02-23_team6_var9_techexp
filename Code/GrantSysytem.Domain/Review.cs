@@ -9,7 +9,6 @@ namespace GrantSysytem.Domain
         public string Comment { get; set; }
         public DateTime SubmissionDate { get; set; }
         
-        public int ApplicationId { get; set; } // Связь с GrantApplication
         public int ExpertId { get; set; }     // Связь с Expert
 
     }
