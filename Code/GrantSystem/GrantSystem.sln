@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrantSystem.Interfaces", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrantSystem.UI", "..\GrantSystem.UI\GrantSystem.UI.csproj", "{E3F705FE-E72E-4928-BAF5-AC6227C88CAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrantSystem.Facade", "GrantSystem.Facade\GrantSystem.Facade.csproj", "{4D7950D6-E712-4D8C-86F6-F2EA538DE128}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrantSystem.Facade", "..\GrantSystem.Facade\GrantSystem.Facade.csproj", "{784E0F4D-969B-4786-86F5-EB44C27ACD81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{E3F705FE-E72E-4928-BAF5-AC6227C88CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3F705FE-E72E-4928-BAF5-AC6227C88CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3F705FE-E72E-4928-BAF5-AC6227C88CAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D7950D6-E712-4D8C-86F6-F2EA538DE128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D7950D6-E712-4D8C-86F6-F2EA538DE128}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D7950D6-E712-4D8C-86F6-F2EA538DE128}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D7950D6-E712-4D8C-86F6-F2EA538DE128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{784E0F4D-969B-4786-86F5-EB44C27ACD81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{784E0F4D-969B-4786-86F5-EB44C27ACD81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{784E0F4D-969B-4786-86F5-EB44C27ACD81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{784E0F4D-969B-4786-86F5-EB44C27ACD81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

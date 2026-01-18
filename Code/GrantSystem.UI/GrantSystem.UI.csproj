@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GrantSystem.Facade\GrantSystem.Facade.csproj" />
     <ProjectReference Include="..\GrantSystem.Interfaces\GrantSystem.Interfaces.csproj" />
     <ProjectReference Include="..\GrantSystem.Repositories\GrantSystem.Repositories.csproj" />
     <ProjectReference Include="..\GrantSystem.Services\GrantSystem.Services.csproj" />
-    <ProjectReference Include="..\GrantSystem\GrantSystem.Facade\GrantSystem.Facade.csproj" />
     <ProjectReference Include="..\GrantSysytem.Domain\GrantSystem.Domain.csproj" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4D7950D6-E712-4D8C-86F6-F2EA538DE128}</ProjectGuid>
+    <ProjectGuid>{784E0F4D-969B-4786-86F5-EB44C27ACD81}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GrantSystem.Facade</RootNamespace>
@@ -45,19 +45,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GrantSystem.Interfaces\GrantSystem.Interfaces.csproj">
+    <ProjectReference Include="..\GrantSystem.Interfaces\GrantSystem.Interfaces.csproj">
       <Project>{1806c82e-0e36-4f20-98cc-542dcd88a22e}</Project>
       <Name>GrantSystem.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GrantSystem.Repositories\GrantSystem.Repositories.csproj">
+    <ProjectReference Include="..\GrantSystem.Repositories\GrantSystem.Repositories.csproj">
       <Project>{205f4ed5-07f0-489b-a458-12270af91cad}</Project>
       <Name>GrantSystem.Repositories</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GrantSystem.Services\GrantSystem.Services.csproj">
+    <ProjectReference Include="..\GrantSystem.Services\GrantSystem.Services.csproj">
       <Project>{c9a905f2-5d26-41ad-aef3-2a216071571b}</Project>
       <Name>GrantSystem.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GrantSysytem.Domain\GrantSystem.Domain.csproj">
+    <ProjectReference Include="..\GrantSysytem.Domain\GrantSystem.Domain.csproj">
       <Project>{5876ddb2-dbec-4888-bd32-4b6f661fad27}</Project>
       <Name>GrantSystem.Domain</Name>
     </ProjectReference>

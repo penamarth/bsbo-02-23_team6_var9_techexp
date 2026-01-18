@@ -38,7 +38,7 @@ namespace GrantSystem.Facade
             return newApplication;
         }
 
-        public GrantApplication UpdateGrantApplication(int applicantId, GrantApplication updateApplicationData) 
+        public GrantApplication UpdateGrantApplication(int applicantId, GrantApplication updateApplicationData)
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.UpdateGrantApplication() ===");
 
