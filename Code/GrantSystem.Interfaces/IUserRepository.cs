@@ -8,5 +8,8 @@ namespace GrantSystem.Interfaces
         TUser findByEmail(string email);
         TUser save(BaseUser user);
         void delete(BaseUser user);
+        int getReviews(string id);
+        double getAvgScore(string id);
+        int getExpertRanking(string id);
     }
 }

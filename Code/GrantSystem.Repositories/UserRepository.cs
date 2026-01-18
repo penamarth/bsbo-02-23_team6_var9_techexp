@@ -33,5 +33,26 @@ namespace GrantSystem.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public int getReviews(string id)
+        {
+            Console.WriteLine("=== Вызов UserRepository.getReviews() ===");
+
+            return 28;
+        }
+
+        public double getAvgScore(string id)
+        {
+            Console.WriteLine("=== Вызов UserRepository.getAvgScore() ===");
+
+            return 7.8;
+        }
+
+        public int getExpertRanking(string id)
+        {
+            Console.WriteLine("=== Вызов UserRepository.getExpertRanking() ===");
+
+            return 5;
+        }
     }
 }

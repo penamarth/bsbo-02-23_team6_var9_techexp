@@ -34,22 +34,21 @@ namespace GrantSystem.UI
             Console.WriteLine($"Создана заявка на грант: Id={newApplication.Id}, Title={newApplication.Title}, Status={newApplication.Status}");
 
             Console.WriteLine("\n======== Верификация заявки (UpdateGrantApplication) ========");
-            Console.WriteLine("\n======== Верификация заявки ========");
 
             newApplication.Status = "ReadyForReview";
             GrantApplication updatedApplication = facade.UpdateGrantApplication(1, newApplication);
             Console.WriteLine($"Обновлена заявка на грант: Id={updatedApplication.Id}, Title={updatedApplication.Title}, Status={updatedApplication.Status}");
 
-            Console.WriteLine("\n======== Отпрака на экспертизу (SubmitApplication) ========");
+            Console.WriteLine("\n======== Отправка на экспертизу (SubmitApplication) ========");
 
             facade.SubmitApplication(newApplication.ApplicantId);
 
-            Console.WriteLine($"Заявка Id={updatedApplication.Id} отправлена на экпертизу");
+            Console.WriteLine($"Заявка Id={updatedApplication.Id} отправлена на экспертизу");
 
-            Console.WriteLine("\n======== Экпертиза и просмотр статуса (GetGrantApplication) ========");
+            Console.WriteLine("\n======== Экспертиза и просмотр статуса (GetGrantApplication) ========");
 
             GrantApplication applicationData = facade.GetGrantApplication(newApplication.Id);
-            Console.WriteLine($"Просмотр экпертизы  " +
+            Console.WriteLine($"Просмотр экспертизы  " +
                 $"Id={applicationData.Id}, " +
                 $"Title={applicationData.Title}, " +
                 $"Status={applicationData.Status}, " +
@@ -62,6 +61,10 @@ namespace GrantSystem.UI
             Console.WriteLine("\n======== Запрос общей статистики ========");
             ApplicationStats applicationStats = facade.getApplicationStats();
             Console.WriteLine($"Общая статистика: Total={applicationStats.TotalApplications}, Approved={applicationStats.ApprovedApplications}, Amount={applicationStats.TotalFundingAmount}, AvgScore={applicationStats.AverageScore}");
+
+            Console.WriteLine("\n======== Запрос персональной статистики ========");
+            ExpertStats expertStats = facade.getExpertStats("123");
+            Console.WriteLine($"Статистика эксперта: Id={expertStats.ExpertId}, Reviews={expertStats.ReviewsCompleted}, AvgScore={expertStats.AverageReviewScore}, Ranking={expertStats.Ranking}");
         }
     }
 }

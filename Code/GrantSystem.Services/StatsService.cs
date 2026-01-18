@@ -29,7 +29,13 @@ namespace GrantSystem.Services
 
         public ExpertStats getExpertStats(string expertId)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("=== Вызов StatsService.getExpertStats() ===");
+
+            int reviews = _userRepo.getReviews(expertId);
+            double avgScore = _userRepo.getAvgScore(expertId);
+            int ranking = _userRepo.getExpertRanking(expertId);
+
+            return new ExpertStats(expertId, reviews, avgScore, ranking);
         }
 
         public GrantStats getGrantStats(string investorId)

@@ -45,30 +45,30 @@ namespace GrantSystem.Repositories
 
         public long countAll()
         {
-            Console.WriteLine("== Вызов AppRepository.countAll() ===");
+            Console.WriteLine("=== Вызов AppRepository.countAll() ===");
 
             return 156;
         }
 
         public long countByStatus(string status)
         {
-            Console.WriteLine("== Вызов AppRepository.countByStatus() ===");
+            Console.WriteLine("=== Вызов AppRepository.countByStatus() ===");
 
             return 42;
         }
 
         public double sumAmount()
         {
-            Console.WriteLine("== Вызов AppRepository.sumAmount() ===");
+            Console.WriteLine("=== Вызов AppRepository.sumAmount() ===");
 
             return 1250000;
         }
 
         public double calculateAverageScore()
         {
-            Console.WriteLine("== Вызов AppRepository.calculateAverageScore ===");
+            Console.WriteLine("=== Вызов AppRepository.calculateAverageScore ===");
 
-            return 8.2F;
+            return 8.2;
         }
     }
 }
