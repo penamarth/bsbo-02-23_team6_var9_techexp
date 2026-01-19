@@ -14,11 +14,14 @@ namespace GrantSystem.UI
             IUserRepository<Expert> expertRepository = new UserRepository<Expert>();
             IStatsService statsService = new StatsService(appRepository, expertRepository);
             INotifyService notifyService = new NotifyService();
+            IReviewRepository reviewRepository = new ReviewRepository();
 
             var facade = new GrantSystemFacade(
+                expertRepository,
                 appRepository,
                 notifyService,
-                statsService
+                statsService,
+                reviewRepository
             );
 
             var expert = new Expert()
@@ -35,7 +38,12 @@ namespace GrantSystem.UI
                 Role = "Заявитель"
             };
 
-            Console.WriteLine("======== УПРАВЛЕНЕИ ЗАЯВКОЙ ========");
+            Console.WriteLine("======== УПРАВЛЕНИЕ ЭКСПЕРТИЗОЙ ========");
+
+            Console.WriteLine("\n======== Авторизация эксперта (Login) ========");
+
+            var loggedExpert = facade.Login("expert@example.com", "password");
+            Console.WriteLine($"Эксперт авторизован: Id={loggedExpert.Id}, Name={loggedExpert.Name}, Role={loggedExpert.Role}");
 
             Console.WriteLine("\n======== Создание заявки (CreateApplication) ========");
 
@@ -70,6 +78,12 @@ namespace GrantSystem.UI
 
             Console.WriteLine("\n======== Создание Review на грант (SubmitReview) ========");
 
+            var savedReview = facade.SubmitReview(applicationData.Id, 10, "Хорошая идея для гранта");
+
+            Console.WriteLine($"Review на грант Id={savedReview.ApplicationId}.\n" +
+                $"Комментарий={savedReview.Comment}\n" +
+                $"Score={savedReview.Score}");
+
             Console.WriteLine("\n======== Получение заявок для экспертизы (GetApplicationsForExpert) ========");
 
             var applicationsForExpert = facade.GetApplicationsForExpert(expert.Id);
@@ -78,12 +92,6 @@ namespace GrantSystem.UI
             {
                 Console.WriteLine($"  - Заявка Id={app.Id}, Title=\"{app.Title}\", Status={app.Status}");
             }
-
-            var applicationWithReview = facade.SubmitReview(expert.Id, 10, "Хорошая идея для гранта", applicationData.Id);
-
-            Console.WriteLine($"Review на грант Id={applicationWithReview.Id}.\n" +
-                $"Комментарий={applicationWithReview.reviews.FirstOrDefault()?.Comment}\n" +
-                $"Score={applicationWithReview.reviews.FirstOrDefault()?.Score}");
 
             Console.WriteLine("\n======== Одобрение гранта (ApproveApplication) ========");
 

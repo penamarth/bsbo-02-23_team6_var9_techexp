@@ -8,19 +8,44 @@ namespace GrantSystem.Facade
 {
     public class GrantSystemFacade
     {
+        private readonly IUserRepository<Expert> _userRepository;
         private readonly IAppRepository _appRepository;
         private readonly IStatsService _statsService;
         private readonly INotifyService _notifyService;
+        private readonly IReviewRepository _reviewRepository;
+        private Expert _currentExpert;
 
         public GrantSystemFacade(
+            IUserRepository<Expert> userRepository,
             IAppRepository appRepository,
             INotifyService notifyService,
-            IStatsService statsService
+            IStatsService statsService,
+            IReviewRepository reviewRepository
         )
         {
+            _userRepository = userRepository;
             _appRepository = appRepository;
             _statsService = statsService;
             _notifyService = notifyService;
+            _reviewRepository = reviewRepository;
+        }
+
+        public Expert Login(string email, string password)
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.Login() ===");
+
+            var expert = _userRepository.findByEmail(email);
+
+            _currentExpert = expert;
+
+            return expert;
+        }
+
+        public void Logout()
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.Logout() ===");
+
+            _currentExpert = null;
         }
 
         public GrantApplication CreateApplication(int applicantId, GrantApplication applicationData)
@@ -60,7 +85,7 @@ namespace GrantSystem.Facade
 
             GrantApplication grantApplication = _appRepository.findById(applicantId);
 
-            grantApplication.Status = "onReview";
+            grantApplication.Status = "UNDER_REVIEW";
 
             GrantApplication updatedApplication = _appRepository.update(grantApplication);
 
@@ -131,7 +156,49 @@ namespace GrantSystem.Facade
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationsForExpert() ===");
 
-            return _appRepository.findByStatus("onReview");
+            return _appRepository.findByStatus("UNDER_REVIEW");
+        }
+
+        public List<Review> GetApplicationReviews(int applicationId)
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationReviews() ===");
+
+            return _reviewRepository.findByApplication(applicationId);
+        }
+
+        public Review SubmitReview(int appId, int score, string comment)
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.SubmitReview() ===");
+
+            var expertId = _currentExpert != null ? _currentExpert.Id : 0;
+
+            var review = new Review
+            {
+                Score = score,
+                Comment = comment,
+                SubmissionDate = DateTime.Now,
+                ApplicationId = appId,
+                ExpertId = expertId
+            };
+
+            var savedReview = _reviewRepository.save(review);
+
+            var grantApplication = _appRepository.findById(appId);
+
+            if (grantApplication.reviews == null)
+            {
+                grantApplication.reviews = new List<Review>();
+            }
+
+            grantApplication.reviews.Add(savedReview);
+
+            var averageScore = grantApplication.getAverageScore();
+
+            _appRepository.update(grantApplication);
+
+            _notifyService.sendNotification(grantApplication.ApplicantId, "Получена новая экспертная оценка. Средний балл: " + averageScore);
+
+            return savedReview;
         }
 
         public ApplicationStats getApplicationStats()

@@ -8,8 +8,7 @@ namespace GrantSysytem.Domain
         public float Score { get; set; }
         public string Comment { get; set; }
         public DateTime SubmissionDate { get; set; }
-        
-        public int ExpertId { get; set; }     // Связь с Expert
-
+        public int ApplicationId { get; set; }
+        public int ExpertId { get; set; }
     }
 }

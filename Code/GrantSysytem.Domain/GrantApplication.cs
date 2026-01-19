@@ -14,5 +14,22 @@ namespace GrantSysytem.Domain
 
         public List<Review> reviews { get; set; } = new List<Review>();
         public Grant grant { get; set; }
+
+        public double getAverageScore()
+        {
+            if (reviews == null || reviews.Count == 0)
+            {
+                return 0;
+            }
+
+            double totalScore = 0;
+
+            foreach (var review in reviews)
+            {
+                totalScore += review.Score;
+            }
+
+            return totalScore / reviews.Count;
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace GrantSystem.Repositories
                     Id = 101,
                     Title = "Исследование нейросетевых моделей",
                     Description = "Проект по разработке эффективных архитектур ИИ.",
-                    Status = "onReview",
+                    Status = "UNDER_REVIEW",
                     SubmissionDate = DateTime.Now.AddDays(-3),
                     ApplicantId = 501
                 },
@@ -44,7 +44,7 @@ namespace GrantSystem.Repositories
                     Id = 102,
                     Title = "Экологические технологии переработки",
                     Description = "Разработка нового метода утилизации пластика.",
-                    Status = "onReview",
+                    Status = "UNDER_REVIEW",
                     SubmissionDate = DateTime.Now.AddDays(-1),
                     ApplicantId = 502
                 }
