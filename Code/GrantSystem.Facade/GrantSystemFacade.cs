@@ -12,7 +12,6 @@ namespace GrantSystem.Facade
         private readonly IAppRepository _appRepository;
         private readonly IStatsService _statsService;
         private readonly INotifyService _notifyService;
-        private readonly IReviewRepository _reviewRepository;
         private Expert _currentExpert;
 
         public GrantSystemFacade(
@@ -20,7 +19,6 @@ namespace GrantSystem.Facade
             IAppRepository appRepository,
             INotifyService notifyService,
             IStatsService statsService,
-            IReviewRepository reviewRepository
         )
         {
             _userRepository = userRepository;
@@ -135,21 +133,28 @@ namespace GrantSystem.Facade
 
             GrantApplication grantApplication = _appRepository.findById(applicationId);
 
-            grantApplication.reviews = new List<Review>()
+            // Убедимся, что список инициализирован
+            if (grantApplication.reviews == null)
+                grantApplication.reviews = new List<Review>();
+
+            int newId = grantApplication.reviews.Count > 0 
+                ? grantApplication.reviews.Max(r => r.Id) + 1 
+                : 1;
+
+            // Добавляем новую рецензию
+            grantApplication.reviews.Add(new Review
             {
-                new Review()
-                {
-                    Id  = 1,
-                    SubmissionDate = DateTime.Now,
-                    Comment = comment,
-                    Score = score,
-                    ExpertId = expertId
-                }
-            };
+                Id = newId,
+                ApplicationId = applicationId,
+                ExpertId = expertId,
+                Score = score,
+                Comment = comment,
+                SubmissionDate = DateTime.Now
+            });
 
             GrantApplication updatedApplication = _appRepository.update(grantApplication);
 
-            return grantApplication;
+            return updatedApplication;
         }
 
         public List<GrantApplication> GetApplicationsForExpert(int expertId)
@@ -158,52 +163,34 @@ namespace GrantSystem.Facade
 
             return _appRepository.findByStatus("UNDER_REVIEW");
         }
-
+                
         public GrantApplication GetApplicationReviews(int applicationId)
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationReviews() ===");
-
-            GrantApplication grantApplication = _appRepository.findById(applicationId);
-            
-            List<Review> reviews = _reviewRepository.findByApplication(applicationId);
-            grantApplication.reviews = reviews;
-
-            return grantApplication;
+            return _appRepository.findById(applicationId); // reviews уже внутри
         }
 
-        public Review SubmitReview(int appId, int score, string comment)
+        public GrantApplication SubmitReview(int expertId, int score, string comment, int applicationId)
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.SubmitReview() ===");
 
-            var expertId = _currentExpert != null ? _currentExpert.Id : 0;
+            var grantApplication = _appRepository.findById(applicationId);
 
-            var review = new Review
+            grantApplication.reviews.Add(new Review
             {
+                Id = grantApplication.reviews.Count + 1,
+                ExpertId = expertId,
                 Score = score,
                 Comment = comment,
                 SubmissionDate = DateTime.Now,
-                ApplicationId = appId,
-                ExpertId = expertId
-            };
+                ApplicationId = applicationId
+            });
 
-            var savedReview = _reviewRepository.save(review);
+            var updatedApplication = _appRepository.update(grantApplication);
 
-            var grantApplication = _appRepository.findById(appId);
+            _notifyService.sendNotification(grantApplication.ApplicantId, "Получена новая экспертная оценка");
 
-            if (grantApplication.reviews == null)
-            {
-                grantApplication.reviews = new List<Review>();
-            }
-
-            grantApplication.reviews.Add(savedReview);
-
-            var averageScore = grantApplication.getAverageScore();
-
-            _appRepository.update(grantApplication);
-
-            _notifyService.sendNotification(grantApplication.ApplicantId, "Получена новая экспертная оценка. Средний балл: " + averageScore);
-
-            return savedReview;
+            return updatedApplication;
         }
 
         public ApplicationStats getApplicationStats()
