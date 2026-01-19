@@ -159,11 +159,16 @@ namespace GrantSystem.Facade
             return _appRepository.findByStatus("UNDER_REVIEW");
         }
 
-        public List<Review> GetApplicationReviews(int applicationId)
+        public GrantApplication GetApplicationReviews(int applicationId)
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationReviews() ===");
 
-            return _reviewRepository.findByApplication(applicationId);
+            GrantApplication grantApplication = _appRepository.findById(applicationId);
+            
+            List<Review> reviews = _reviewRepository.findByApplication(applicationId);
+            grantApplication.reviews = reviews;
+
+            return grantApplication;
         }
 
         public Review SubmitReview(int appId, int score, string comment)
