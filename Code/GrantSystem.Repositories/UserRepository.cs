@@ -13,7 +13,15 @@ namespace GrantSystem.Repositories
 
         public T findByEmail(string email)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("=== Вызов UserRepository.findByEmail() ===");
+
+            return new T
+            {
+                Id = 1,
+                Name = "Эксперт",
+                Role = "Expert",
+                PasswordHash = "password"
+            };
         }
 
         public T findById(int id)
