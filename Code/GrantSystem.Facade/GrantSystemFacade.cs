@@ -127,6 +127,13 @@ namespace GrantSystem.Facade
             return grantApplication;
         }
 
+        public List<GrantApplication> GetApplicationsForExpert(int expertId)
+        {
+            Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationsForExpert() ===");
+
+            return _appRepository.findByStatus("onReview");
+        }
+
         public ApplicationStats getApplicationStats()
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.getApplicationStats() ===");

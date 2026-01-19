@@ -70,6 +70,15 @@ namespace GrantSystem.UI
 
             Console.WriteLine("\n======== Создание Review на грант (SubmitReview) ========");
 
+            Console.WriteLine("\n======== Получение заявок для экспертизы (GetApplicationsForExpert) ========");
+
+            var applicationsForExpert = facade.GetApplicationsForExpert(expert.Id);
+            Console.WriteLine($"Найдено заявок для экспертизы: {applicationsForExpert.Count}");
+            foreach (var app in applicationsForExpert)
+            {
+                Console.WriteLine($"  - Заявка Id={app.Id}, Title=\"{app.Title}\", Status={app.Status}");
+            }
+
             var applicationWithReview = facade.SubmitReview(expert.Id, 10, "Хорошая идея для гранта", applicationData.Id);
 
             Console.WriteLine($"Review на грант Id={applicationWithReview.Id}.\n" +

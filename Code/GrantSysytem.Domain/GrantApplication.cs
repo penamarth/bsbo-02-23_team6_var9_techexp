@@ -12,7 +12,7 @@ namespace GrantSysytem.Domain
         public DateTime SubmissionDate { get; set; }
         public int ApplicantId { get; set; }
 
-        public List<Review> reviews { get; set; }
+        public List<Review> reviews { get; set; } = new List<Review>();
         public Grant grant { get; set; }
     }
 }

@@ -26,7 +26,29 @@ namespace GrantSystem.Repositories
 
         public List<GrantApplication> findByStatus(string status)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("=== Вызов AppRepository.findByStatus() ===");
+
+            return new List<GrantApplication>
+            {
+                new GrantApplication
+                {
+                    Id = 101,
+                    Title = "Исследование нейросетевых моделей",
+                    Description = "Проект по разработке эффективных архитектур ИИ.",
+                    Status = "onReview",
+                    SubmissionDate = DateTime.Now.AddDays(-3),
+                    ApplicantId = 501
+                },
+                new GrantApplication
+                {
+                    Id = 102,
+                    Title = "Экологические технологии переработки",
+                    Description = "Разработка нового метода утилизации пластика.",
+                    Status = "onReview",
+                    SubmissionDate = DateTime.Now.AddDays(-1),
+                    ApplicantId = 502
+                }
+            };
         }
 
         public GrantApplication save(GrantApplication app)
