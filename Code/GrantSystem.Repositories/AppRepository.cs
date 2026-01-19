@@ -21,7 +21,28 @@ namespace GrantSystem.Repositories
         {
             Console.WriteLine("=== Вызов AppRepository.findById() ===");
 
-            return new GrantApplication() { Id = id};
+            // Мок: заявка с уже существующими рецензиями
+            return new GrantApplication
+            {
+                Id = id,
+                Title = "Исследование",
+                Description = "Проект по юмл",
+                Status = "UNDER_REVIEW",
+                ApplicantId = 501,
+                SubmissionDate = DateTime.Now.AddDays(-3),
+                reviews = new List<Review>
+                {
+                    new Review
+                    {
+                        Id = 1,
+                        ApplicationId = id,
+                        ExpertId = 10,
+                        Score = 8.5f,
+                        Comment = "Хороший проект",
+                        SubmissionDate = DateTime.Now.AddDays(-2)
+                    }
+                }
+            };
         }
 
         public List<GrantApplication> findByStatus(string status)

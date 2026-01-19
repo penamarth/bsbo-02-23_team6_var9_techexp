@@ -14,14 +14,12 @@ namespace GrantSystem.UI
             IUserRepository<Expert> expertRepository = new UserRepository<Expert>();
             IStatsService statsService = new StatsService(appRepository, expertRepository);
             INotifyService notifyService = new NotifyService();
-            IReviewRepository reviewRepository = new ReviewRepository();
 
             var facade = new GrantSystemFacade(
                 expertRepository,
                 appRepository,
                 notifyService,
                 statsService,
-                reviewRepository
             );
 
             var expert = new Expert()
@@ -78,11 +76,13 @@ namespace GrantSystem.UI
 
             Console.WriteLine("\n======== Создание Review на грант (SubmitReview) ========");
 
-            var savedReview = facade.SubmitReview(applicationData.Id, 10, "Хорошая идея для гранта");
+            var applicationWithReview = facade.SubmitReview(expert.Id, 10, "Хорошая идея для гранта", applicationData.Id);
 
-            Console.WriteLine($"Review на грант Id={savedReview.ApplicationId}.\n" +
-                $"Комментарий={savedReview.Comment}\n" +
-                $"Score={savedReview.Score}");
+            var newReview = applicationWithReview.reviews.Last(); // берём последнюю добавленную рецензию
+
+            Console.WriteLine($"Review на грант Id={newReview.ApplicationId}.\n" +
+                $"Комментарий={newReview.Comment}\n" +
+                $"Score={newReview.Score}");
 
             Console.WriteLine("\n======== Получение заявок для экспертизы (GetApplicationsForExpert) ========");
 
