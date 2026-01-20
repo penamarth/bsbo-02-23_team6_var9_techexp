@@ -1,23 +1,35 @@
-﻿namespace GrantSystem.Services
+﻿using System;
+using System.Collections.Generic;
+using GrantSystem.Interfaces;
+
+namespace GrantSystem.Services
 {
     public class NotifyService : INotifyService
     {
+
         public void sendNotification(int userId, string message)
         {
-            Console.WriteLine($"Уведомление для пользователя {userId}: {message}");
+            Console.WriteLine("=== Вызов адаптера NotifyService.SendNotification() ===");
+
+            ExternalEmailServiceAPI.sendEmail(userId, message);
         }
 
         public void sendNotification(List<int> userIds, string message)
         {
-            foreach (var userId in userIds)
-            {
-                Console.WriteLine($"Уведомление для пользователя {userId}: {message}");
-            }
-        }
+            Console.WriteLine("=== Вызов адаптера NotifyService.SendNotification() для ExpertGroups ===");
 
-        public void SendNotification(User user, string message)
+            userIds.ForEach(id => ExternalEmailServiceAPI.sendEmail(id, message));
+        }
+    }
+
+    static class ExternalEmailServiceAPI
+    {
+        public static bool sendEmail(int userId, string body)
         {
-            Console.WriteLine($"Уведомление для {user.Name} ({user.Email}): {message}");
+            Console.WriteLine("Отправка уведомления на E-mail");
+            Console.WriteLine($"Отправлено уведомление пользователю с id={userId}. Уведомление: " + body);
+
+            return true;
         }
     }
 }

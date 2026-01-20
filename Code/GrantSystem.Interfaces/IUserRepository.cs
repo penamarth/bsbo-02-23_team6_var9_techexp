@@ -1,6 +1,8 @@
-﻿namespace GrantSystem.Interfaces
+﻿using GrantSysytem.Domain;
+
+namespace GrantSystem.Interfaces
 {
-    public interface IUserRepository<TUser> where TUser : BaseUser
+    public interface IUserRepository<TUser>
     {
         TUser findById(int id);
         TUser findByEmail(string email);
@@ -9,6 +11,5 @@
         int getReviews(string id);
         double getAvgScore(string id);
         int getExpertRanking(string id);
-        List<TUser> GetAll();
     }
 }
