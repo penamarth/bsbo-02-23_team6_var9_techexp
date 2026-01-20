@@ -192,5 +192,26 @@ namespace GrantSystem.Facade
             
             return _statsService.getGrantStats(investorId);
         }
+
+        public GrantApplication FinalizeReview(int applicationId)
+        {
+            var application = _appRepository.findById(applicationId);
+
+            var expertHandler = new ExpertReviewHandler();
+            var investorHandler = new InvestorApprovalHandler();
+
+            expertHandler.SetNext(investorHandler);
+
+            var result = expertHandler.Handle(application);
+
+            _appRepository.update(result);
+
+            _notifyService.sendNotification(
+                result.ApplicantId,
+                $"Решение по заявке: {result.Status}"
+            );
+
+            return result;
+        }
     }
 }
