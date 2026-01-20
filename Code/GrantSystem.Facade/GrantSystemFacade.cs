@@ -3,6 +3,7 @@ using GrantSystem.Repositories;
 using GrantSysytem.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GrantSystem.Facade
 {
@@ -18,14 +19,13 @@ namespace GrantSystem.Facade
             IUserRepository<Expert> userRepository,
             IAppRepository appRepository,
             INotifyService notifyService,
-            IStatsService statsService,
+            IStatsService statsService
         )
         {
             _userRepository = userRepository;
             _appRepository = appRepository;
             _statsService = statsService;
             _notifyService = notifyService;
-            _reviewRepository = reviewRepository;
         }
 
         public Expert Login(string email, string password)
@@ -154,6 +154,8 @@ namespace GrantSystem.Facade
 
             GrantApplication updatedApplication = _appRepository.update(grantApplication);
 
+            _notifyService.sendNotification(grantApplication.ApplicantId, "Получена новая экспертная оценка");
+
             return updatedApplication;
         }
 
@@ -168,29 +170,6 @@ namespace GrantSystem.Facade
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationReviews() ===");
             return _appRepository.findById(applicationId); // reviews уже внутри
-        }
-
-        public GrantApplication SubmitReview(int expertId, int score, string comment, int applicationId)
-        {
-            Console.WriteLine("=== Вызов GrantSystemFacade.SubmitReview() ===");
-
-            var grantApplication = _appRepository.findById(applicationId);
-
-            grantApplication.reviews.Add(new Review
-            {
-                Id = grantApplication.reviews.Count + 1,
-                ExpertId = expertId,
-                Score = score,
-                Comment = comment,
-                SubmissionDate = DateTime.Now,
-                ApplicationId = applicationId
-            });
-
-            var updatedApplication = _appRepository.update(grantApplication);
-
-            _notifyService.sendNotification(grantApplication.ApplicantId, "Получена новая экспертная оценка");
-
-            return updatedApplication;
         }
 
         public ApplicationStats getApplicationStats()

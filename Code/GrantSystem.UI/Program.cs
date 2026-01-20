@@ -19,7 +19,7 @@ namespace GrantSystem.UI
                 expertRepository,
                 appRepository,
                 notifyService,
-                statsService,
+                statsService
             );
 
             var expert = new Expert()
