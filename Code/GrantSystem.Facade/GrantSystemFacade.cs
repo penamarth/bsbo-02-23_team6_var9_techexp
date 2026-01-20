@@ -1,5 +1,4 @@
 ﻿using GrantSystem.Interfaces;
-using GrantSystem.Repositories;
 using GrantSysytem.Domain;
 using System;
 using System.Collections.Generic;
@@ -8,210 +7,186 @@ namespace GrantSystem.Facade
 {
     public class GrantSystemFacade
     {
-        private readonly IUserRepository<Expert> _userRepository;
+        private readonly IUserRepository<Expert> _expertRepository;
+        private readonly IUserRepository<Applicant> _applicantRepository;
         private readonly IAppRepository _appRepository;
-        private readonly IStatsService _statsService;
         private readonly INotifyService _notifyService;
-        private Expert _currentExpert;
+        private readonly IPaymentService _paymentService;
+        private readonly IStatsService _statsService;
+        private User _currentUser;
 
         public GrantSystemFacade(
-            IUserRepository<Expert> userRepository,
+            IUserRepository<Expert> expertRepository,
+            IUserRepository<Applicant> applicantRepository,
             IAppRepository appRepository,
             INotifyService notifyService,
-            IStatsService statsService,
-        )
+            IPaymentService paymentService,
+            IStatsService statsService)
         {
-            _userRepository = userRepository;
+            _expertRepository = expertRepository;
+            _applicantRepository = applicantRepository;
             _appRepository = appRepository;
-            _statsService = statsService;
             _notifyService = notifyService;
-            _reviewRepository = reviewRepository;
+            _paymentService = paymentService;
+            _statsService = statsService;
         }
 
-        public Expert Login(string email, string password)
+        public User Login(string email, string password)
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.Login() ===");
-
-            var expert = _userRepository.findByEmail(email);
-
-            _currentExpert = expert;
-
-            return expert;
+            var user = _expertRepository.findByEmail(email) as User 
+                ?? _applicantRepository.findByEmail(email) as User;
+            _currentUser = user;
+            return user;
         }
 
         public void Logout()
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.Logout() ===");
-
-            _currentExpert = null;
+            _currentUser = null;
         }
 
-        public GrantApplication CreateApplication(int applicantId, GrantApplication applicationData)
+        public GrantApplication CreateApplication(GrantApplication applicationData)
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.CreateApplication() ===");
-
-            IUserRepository<Applicant> userApplicantRepository = new UserRepository<Applicant>();
-            var user = userApplicantRepository.findById(applicantId); // получаем пользователя-заявителя по id
-
             var newApplication = new GrantApplication
             {
-                Id = 1,
-                ApplicantId = user.Id,
+                Id = GenerateNewId(),
+                ApplicantId = applicationData.ApplicantId,
                 Title = applicationData.Title,
                 Description = applicationData.Description,
-                Status = "Created",
+                Status = "CREATED",
                 SubmissionDate = DateTime.Now
             };
-
+            
             _appRepository.save(newApplication);
-
             return newApplication;
         }
 
-        public GrantApplication UpdateGrantApplication(int applicantId, GrantApplication updateApplicationData)
+        public void SubmitApplication(int appId)
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.UpdateGrantApplication() ===");
-
-            var updatedApplication = _appRepository.update(updateApplicationData);
-
-            return updatedApplication;
-        }
-
-        public void SubmitApplication(int applicantId)
-        {
-            Console.WriteLine("=== Вызов GrantSystemFacade.SubmitApplication() ===");
-
-            GrantApplication grantApplication = _appRepository.findById(applicantId);
-
-            grantApplication.Status = "UNDER_REVIEW";
-
-            GrantApplication updatedApplication = _appRepository.update(grantApplication);
-
-            _notifyService.sendNotification(grantApplication.ApplicantId, "Заявка успешно принята к рассмотрению");
-            _notifyService.sendNotification(new List<int>() { 1, 2, 3}, "Новая заявка для экпертизы");
-        }
-
-        public GrantApplication GetGrantApplication(int applicantId)
-        {
-            Console.WriteLine("=== Вызов GrantSystemFacade.GetGrantApplication() ===");
-
-            GrantApplication grantApplication = _appRepository.findById(applicantId);
-
-            // Мокаем данные гранта
-            grantApplication.Id = 1;
-            grantApplication.ApplicantId = 1;
-            grantApplication.Title = "Новая заявка на грант";
-            grantApplication.Description = "Grant for scientific research project.";
-            grantApplication.Status = "onReview";
-            grantApplication.reviews = new List<Review>();
-
-            return grantApplication;
-        }
-
-        public void ApproveApplication(int applicationId)
-        {
-            Console.WriteLine("=== Вызов GrantSystemFacade.ApproveApplication() ===");
-
-            GrantApplication grantApplication = _appRepository.findById(applicationId);
+            var application = _appRepository.findById(appId);
+            application.Status = "UNDER_REVIEW";
+            _appRepository.update(application);
             
-            grantApplication.grant = new Grant()
+            var experts = _expertRepository.GetAll();
+            foreach (var expert in experts)
             {
-                Amount = 100000,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Status = "Approved"
-            };
-
-            GrantApplication updatedApplication = _appRepository.update(grantApplication);
-
-            _notifyService.sendNotification(grantApplication.ApplicantId, "Заявка ободрена");
+                _notifyService.SendNotification(expert, "Новая заявка для экспертизы");
+            }
         }
 
-        public GrantApplication SubmitReview(int expertId, int score, string comment, int applicationId)
+        public List<GrantApplication> GetApplicationsForExpert()
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.SubmitReview() ===");
+            return _appRepository.GetApplicationsForExpert();
+        }
 
-            GrantApplication grantApplication = _appRepository.findById(applicationId);
-
-            // Убедимся, что список инициализирован
-            if (grantApplication.reviews == null)
-                grantApplication.reviews = new List<Review>();
-
-            int newId = grantApplication.reviews.Count > 0 
-                ? grantApplication.reviews.Max(r => r.Id) + 1 
-                : 1;
-
-            // Добавляем новую рецензию
-            grantApplication.reviews.Add(new Review
+        public Review SubmitReview(int appId, int score, string comment)
+        {
+            var application = _appRepository.findById(appId);
+            var expert = _currentUser as Expert;
+            
+            var review = new Review
             {
-                Id = newId,
-                ApplicationId = applicationId,
-                ExpertId = expertId,
+                Id = GenerateNewId(),
+                ApplicationId = appId,
+                ExpertId = expert.Id,
                 Score = score,
                 Comment = comment,
                 SubmissionDate = DateTime.Now
-            });
-
-            GrantApplication updatedApplication = _appRepository.update(grantApplication);
-
-            return updatedApplication;
+            };
+            
+            _appRepository.AddReview(review);
+            application.Status = "REVIEWED";
+            _appRepository.update(application);
+            
+            _notifyService.SendNotification(
+                _applicantRepository.findById(application.ApplicantId), 
+                "Получена новая экспертная оценка"
+            );
+            
+            return review;
         }
 
-        public List<GrantApplication> GetApplicationsForExpert(int expertId)
+        public List<Review> GetApplicationReviews(int appId)
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationsForExpert() ===");
-
-            return _appRepository.findByStatus("UNDER_REVIEW");
-        }
-                
-        public GrantApplication GetApplicationReviews(int applicationId)
-        {
-            Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationReviews() ===");
-            return _appRepository.findById(applicationId); // reviews уже внутри
+            return _appRepository.GetReviewsForApplication(appId);
         }
 
-        public GrantApplication SubmitReview(int expertId, int score, string comment, int applicationId)
+        public Grant ApproveApplication(int appId, decimal amount)
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.SubmitReview() ===");
-
-            var grantApplication = _appRepository.findById(applicationId);
-
-            grantApplication.reviews.Add(new Review
+            var application = _appRepository.findById(appId);
+            
+            if (application.Status != "APPROVED" || amount <= 0)
             {
-                Id = grantApplication.reviews.Count + 1,
-                ExpertId = expertId,
-                Score = score,
-                Comment = comment,
-                SubmissionDate = DateTime.Now,
-                ApplicationId = applicationId
-            });
-
-            var updatedApplication = _appRepository.update(grantApplication);
-
-            _notifyService.sendNotification(grantApplication.ApplicantId, "Получена новая экспертная оценка");
-
-            return updatedApplication;
+                throw new InvalidOperationException(
+                    $"Заявка не одобрена (статус: {application.Status}) или неверная сумма: {amount}"
+                );
+            }
+            
+            var grant = new Grant
+            {
+                Id = GenerateNewId(),
+                ApplicationId = appId,
+                Amount = amount,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddYears(1),
+                Status = "APPROVED",
+                InvestorId = _currentUser?.Id.ToString() ?? "SYSTEM"
+            };
+            
+            _appRepository.SaveGrant(grant);
+            
+            application.Status = "GRANT_ISSUED";
+            _appRepository.update(application);
+            
+            var applicant = _applicantRepository.findById(application.ApplicantId);
+            _notifyService.SendNotification(applicant, "Ваш грант одобрен");
+            
+            try
+            {
+                bool paymentResult = _paymentService.ProcessPayment(grant);
+                
+                if (paymentResult)
+                {
+                    grant.Status = "DISBURSED";
+                    _appRepository.SaveGrant(grant);
+                    return grant;
+                }
+            }
+            catch (PaymentFailedException ex)
+            {
+                throw;
+            }
+            
+            return grant;
         }
 
-        public ApplicationStats getApplicationStats()
+        public void RejectApplication(int appId, string reason)
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.getApplicationStats() ===");
-
-            return _statsService.getApplicationStats();
+            var application = _appRepository.findById(appId);
+            application.Status = "REJECTED";
+            _appRepository.update(application);
+            
+            var applicant = _applicantRepository.findById(application.ApplicantId);
+            _notifyService.SendNotification(applicant, $"Заявка отклонена. Причина: {reason}");
         }
 
-        public ExpertStats getExpertStats(string expertId)
+        public ApplicationStats GetApplicationsStats()
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.getExpertStats() ===");
+            return _appRepository.GetApplicationStats();
+        }
 
+        public GrantStats GetGrantStats(string investorId)
+        {
+            return _appRepository.GetGrantStats(investorId);
+        }
+
+        public ExpertStats GetExpertStats(string expertId)
+        {
             return _statsService.getExpertStats(expertId);
         }
 
-        public GrantStats getGrantStats(string investorId)
+        private int GenerateNewId()
         {
-            Console.WriteLine("=== Вызов GrantSystemFacade.getGrantStats() ===");
-            
-            return _statsService.getGrantStats(investorId);
+            return new Random().Next(1000, 9999);
         }
     }
 }

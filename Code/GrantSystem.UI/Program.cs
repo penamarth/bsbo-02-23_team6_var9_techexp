@@ -2,7 +2,8 @@
 using GrantSystem.Interfaces;
 using GrantSystem.Repositories;
 using GrantSystem.Services;
-using GrantSysytem.Domain;
+using GrantSystem.Domain;
+using System;
 
 namespace GrantSystem.UI
 {
@@ -12,20 +13,25 @@ namespace GrantSystem.UI
         {
             IAppRepository appRepository = new AppRepository();
             IUserRepository<Expert> expertRepository = new UserRepository<Expert>();
+            IUserRepository<Applicant> applicantRepository = new UserRepository<Applicant>();
             IStatsService statsService = new StatsService(appRepository, expertRepository);
             INotifyService notifyService = new NotifyService();
+            IPaymentService paymentService = new PaymentService(new MockPaymentGatewayAPI(), appRepository, notifyService);
 
             var facade = new GrantSystemFacade(
                 expertRepository,
+                applicantRepository,
                 appRepository,
                 notifyService,
-                statsService,
+                paymentService,
+                statsService
             );
 
             var expert = new Expert()
             {
                 Id = 1,
                 Name = "Николай",
+                Email = "expert@example.com",
                 Role = "Эксперт"
             };
 
@@ -33,83 +39,63 @@ namespace GrantSystem.UI
             {
                 Id = 2,
                 Name = "Иван",
+                Email = "ivan@example.com",
                 Role = "Заявитель"
             };
 
-            Console.WriteLine("======== УПРАВЛЕНИЕ ЭКСПЕРТИЗОЙ ========");
-
-            Console.WriteLine("\n======== Авторизация эксперта (Login) ========");
+            expertRepository.save(expert);
+            applicantRepository.save(applicant);
 
             var loggedExpert = facade.Login("expert@example.com", "password");
-            Console.WriteLine($"Эксперт авторизован: Id={loggedExpert.Id}, Name={loggedExpert.Name}, Role={loggedExpert.Role}");
 
-            Console.WriteLine("\n======== Создание заявки (CreateApplication) ========");
-
-            GrantApplication newApplication = facade.CreateApplication(applicant.Id, new GrantApplication
+            GrantApplication newApplication = facade.CreateApplication(new GrantApplication
             {
+                ApplicantId = applicant.Id,
                 Title = "Новая заявка на грант",
                 Description = "Grant for scientific research project.",
-                grant = new Grant()
+                Status = "CREATED"
             });
-            Console.WriteLine($"Создана заявка на грант: Id={newApplication.Id}, Title={newApplication.Title}, Status={newApplication.Status}");
 
-            Console.WriteLine("\n======== Верификация заявки (UpdateGrantApplication) ========");
+            facade.SubmitApplication(newApplication.Id);
 
-            newApplication.Status = "ReadyForReview";
-            GrantApplication updatedApplication = facade.UpdateGrantApplication(1, newApplication);
-            Console.WriteLine($"Обновлена заявка на грант: Id={updatedApplication.Id}, Title={updatedApplication.Title}, Status={updatedApplication.Status}");
+            var applicationsForExpert = facade.GetApplicationsForExpert();
 
-            Console.WriteLine("\n======== Отправка на экспертизу (SubmitApplication) ========");
+            var application = appRepository.findById(newApplication.Id);
+            application.Status = "APPROVED";
+            appRepository.update(application);
 
-            facade.SubmitApplication(newApplication.ApplicantId);
+            var review = facade.SubmitReview(newApplication.Id, 10, "Хорошая идея для гранта");
 
-            Console.WriteLine($"Заявка Id={updatedApplication.Id} отправлена на экспертизу");
-
-            Console.WriteLine("\n======== Экспертиза и просмотр статуса (GetGrantApplication) ========");
-
-            GrantApplication applicationData = facade.GetGrantApplication(newApplication.Id);
-            Console.WriteLine($"Просмотр экспертизы  " +
-                $"Id={applicationData.Id}, " +
-                $"Title={applicationData.Title}, " +
-                $"Status={applicationData.Status}, " +
-                $"Review={applicationData.reviews.Count()}");
-
-            Console.WriteLine("\n======== Создание Review на грант (SubmitReview) ========");
-
-            var applicationWithReview = facade.SubmitReview(expert.Id, 10, "Хорошая идея для гранта", applicationData.Id);
-
-            var newReview = applicationWithReview.reviews.Last(); // берём последнюю добавленную рецензию
-
-            Console.WriteLine($"Review на грант Id={newReview.ApplicationId}.\n" +
-                $"Комментарий={newReview.Comment}\n" +
-                $"Score={newReview.Score}");
-
-            Console.WriteLine("\n======== Получение заявок для экспертизы (GetApplicationsForExpert) ========");
-
-            var applicationsForExpert = facade.GetApplicationsForExpert(expert.Id);
-            Console.WriteLine($"Найдено заявок для экспертизы: {applicationsForExpert.Count}");
-            foreach (var app in applicationsForExpert)
+            try
             {
-                Console.WriteLine($"  - Заявка Id={app.Id}, Title=\"{app.Title}\", Status={app.Status}");
+                var grant = facade.ApproveApplication(newApplication.Id, 50000);
+            }
+            catch (PaymentFailedException ex)
+            {
+                Console.WriteLine($"Ошибка платежа: {ex.Message}");
             }
 
-            Console.WriteLine("\n======== Одобрение гранта (ApproveApplication) ========");
+            var applicationStats = facade.GetApplicationsStats();
+            var expertStats = facade.GetExpertStats("1");
+            var grantStats = facade.GetGrantStats("SYSTEM");
 
-            facade.ApproveApplication(applicationData.Id);
+            facade.Logout();
+        }
+    }
 
-            Console.WriteLine("\n======== СТАТИСТИКА ГРАНТА ========");
-
-            Console.WriteLine("\n======== Запрос общей статистики ========");
-            ApplicationStats applicationStats = facade.getApplicationStats();
-            Console.WriteLine($"Общая статистика: Total={applicationStats.TotalApplications}, Approved={applicationStats.ApprovedApplications}, Amount={applicationStats.TotalFundingAmount}, AvgScore={applicationStats.AverageScore}");
-
-            Console.WriteLine("\n======== Запрос персональной статистики ========");
-            ExpertStats expertStats = facade.getExpertStats("123");
-            Console.WriteLine($"Статистика эксперта: Id={expertStats.ExpertId}, Reviews={expertStats.ReviewsCompleted}, AvgScore={expertStats.AverageReviewScore}, Ranking={expertStats.Ranking}");
-
-            Console.WriteLine("\n======== Запрос финансовой статистики ========");
-            GrantStats grantStats = facade.getGrantStats("123");
-            Console.WriteLine($"Финансовая статистика: Id={grantStats.InvestorId}, Grants={grantStats.GrantsCount}, Total={grantStats.TotalAmount}, AvgAmount={grantStats.AverageAmount}, UniqueApplicants={grantStats.UniqueApplicants}");
+    public class MockPaymentGatewayAPI : IPaymentGatewayAPI
+    {
+        public PaymentResult ProcessPayment(decimal amount, string recipientAccount)
+        {
+            var random = new Random();
+            bool success = random.Next(0, 2) == 1;
+            
+            return new PaymentResult
+            {
+                IsSuccessful = success,
+                TransactionId = success ? Guid.NewGuid().ToString() : null,
+                ErrorMessage = success ? null : "Ошибка платежного шлюза"
+            };
         }
     }
 }
