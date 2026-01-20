@@ -1,7 +1,4 @@
-﻿using GrantSysytem.Domain;
-using System.Collections.Generic;
-
-namespace GrantSystem.Interfaces
+﻿namespace GrantSystem.Interfaces
 {
     public interface IAppRepository
     {
@@ -19,5 +16,19 @@ namespace GrantSystem.Interfaces
         double getInvestorTotal(string id);
         double avgAmountByInvestor(string id);
         int getUniqueApplicants(string id);
+        
+        void AddReview(Review review);
+        List<Review> GetReviewsForApplication(int appId);
+        List<Review> GetReviewsByExpertId(int expertId);
+        
+        void SaveGrant(Grant grant);
+        Grant GetGrantById(int grantId);
+        List<Grant> GetGrantsByInvestor(string investorId);
+        void UpdateGrant(Grant grant);
+        
+        ApplicationStats GetApplicationStats();
+        GrantStats GetGrantStats(string investorId);
+        List<GrantApplication> GetApplicationsForExpert();
+        List<GrantApplication> GetAllApplications();
     }
 }
