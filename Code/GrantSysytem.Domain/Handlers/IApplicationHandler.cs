@@ -1,4 +1,4 @@
-namespace GrantSysytem.Domain.Handlers
+﻿namespace GrantSysytem.Domain.Handlers
 {
     public interface IApplicationHandler
     {
