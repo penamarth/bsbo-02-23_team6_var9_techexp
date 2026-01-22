@@ -8,7 +8,6 @@ namespace GrantSystem.Repositories
     public class AppRepository : IAppRepository
     {
         private List<Grant> _grants = new List<Grant>();
-        private int _nextGrantId = 1;
 
         public void delete(BaseUser user)
         {
@@ -144,14 +143,9 @@ namespace GrantSystem.Repositories
             return 12;
         }
 
-        public void SaveGrant(Grant grant)
+        public void save(Grant grant)
         {
-            Console.WriteLine("=== Вызов AppRepository.SaveGrant() ===");
-            
-            if (grant.Id == 0)
-            {
-                grant.Id = _nextGrantId++;
-            }
+            Console.WriteLine("=== Вызов AppRepository.save(Grant) ===");
             _grants.Add(grant);
         }
     }
