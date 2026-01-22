@@ -1,4 +1,4 @@
-﻿using GrantSystem.Interfaces;
+using GrantSystem.Interfaces;
 using GrantSysytem.Domain;
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,9 @@ namespace GrantSystem.Repositories
 {
     public class AppRepository : IAppRepository
     {
+        private List<Grant> _grants = new List<Grant>();
+        private int _nextGrantId = 1;
+
         public void delete(BaseUser user)
         {
             throw new NotImplementedException();
@@ -21,7 +24,6 @@ namespace GrantSystem.Repositories
         {
             Console.WriteLine("=== Вызов AppRepository.findById() ===");
 
-            // Мок: заявка с уже существующими рецензиями
             return new GrantApplication
             {
                 Id = id,
@@ -140,6 +142,17 @@ namespace GrantSystem.Repositories
             Console.WriteLine("=== Вызов AppRepository.getUniqueApplicants() ===");
 
             return 12;
+        }
+
+        public void SaveGrant(Grant grant)
+        {
+            Console.WriteLine("=== Вызов AppRepository.SaveGrant() ===");
+            
+            if (grant.Id == 0)
+            {
+                grant.Id = _nextGrantId++;
+            }
+            _grants.Add(grant);
         }
     }
 }
