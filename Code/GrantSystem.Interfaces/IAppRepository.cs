@@ -19,6 +19,6 @@ namespace GrantSystem.Interfaces
         double getInvestorTotal(string id);
         double avgAmountByInvestor(string id);
         int getUniqueApplicants(string id);
-        void SaveGrant(Grant grant);
+        void save(Grant grant);
     }
 }
