@@ -10,7 +10,5 @@ namespace GrantSysytem.Domain
         public DateTime EndDate { get; set; }
         public string Status { get; set; }
         public int ApplicationId { get; set; }
-        public string InvestorId { get; set; }
-        public string RecipientAccount { get; set; }
     }
 }
