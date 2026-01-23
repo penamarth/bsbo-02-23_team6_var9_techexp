@@ -38,15 +38,10 @@ namespace GrantSystem.UI
                 Role = "Заявитель"
             };
 
-            Console.WriteLine("======== УПРАВЛЕНИЕ ЭКСПЕРТИЗОЙ ========");
-
-            Console.WriteLine("\n======== Авторизация эксперта (Login) ========");
-
-            var loggedExpert = facade.Login("expert@example.com", "password");
-            Console.WriteLine($"Эксперт авторизован: Id={loggedExpert.Id}, Name={loggedExpert.Name}, Role={loggedExpert.Role}");
+            // ======== УПРАВЛЕНИЕ ЗАЯВКОЙ (заявитель) ========
+            Console.WriteLine("======== УПРАВЛЕНИЕ ЗАЯВКОЙ ========");
 
             Console.WriteLine("\n======== Создание заявки (CreateApplication) ========");
-
             GrantApplication newApplication = facade.CreateApplication(applicant.Id, new GrantApplication
             {
                 Title = "Новая заявка на грант",
@@ -56,49 +51,66 @@ namespace GrantSystem.UI
             Console.WriteLine($"Создана заявка на грант: Id={newApplication.Id}, Title={newApplication.Title}, Status={newApplication.Status}");
 
             Console.WriteLine("\n======== Верификация заявки (UpdateGrantApplication) ========");
-
             newApplication.Status = "ReadyForReview";
             GrantApplication updatedApplication = facade.UpdateGrantApplication(1, newApplication);
             Console.WriteLine($"Обновлена заявка на грант: Id={updatedApplication.Id}, Title={updatedApplication.Title}, Status={updatedApplication.Status}");
 
             Console.WriteLine("\n======== Отправка на экспертизу (SubmitApplication) ========");
-
             facade.SubmitApplication(newApplication.ApplicantId);
-
             Console.WriteLine($"Заявка Id={updatedApplication.Id} отправлена на экспертизу");
 
-            Console.WriteLine("\n======== Экспертиза и просмотр статуса (GetGrantApplication) ========");
+            // ======== УПРАВЛЕНИЕ ЭКСПЕРТИЗОЙ (эксперт) ========
+            Console.WriteLine("\n======== УПРАВЛЕНИЕ ЭКСПЕРТИЗОЙ ========");
 
-            GrantApplication applicationData = facade.GetGrantApplication(newApplication.Id);
-            Console.WriteLine($"Просмотр экспертизы  " +
-                $"Id={applicationData.Id}, " +
-                $"Title={applicationData.Title}, " +
-                $"Status={applicationData.Status}, " +
-                $"Review={applicationData.reviews.Count()}");
+            Console.WriteLine("\n======== 1. Авторизация эксперта (Login) ========");
+            var loggedExpert = facade.Login("expert@example.com", "password");
+            Console.WriteLine($"Эксперт авторизован: Id={loggedExpert.Id}, Name={loggedExpert.Name}, Role={loggedExpert.Role}");
 
-            Console.WriteLine("\n======== Создание Review на грант (SubmitReview) ========");
-
-            var applicationWithReview = facade.SubmitReview(expert.Id, 10, "Хорошая идея для гранта", applicationData.Id);
-
-            var newReview = applicationWithReview.reviews.Last(); // берём последнюю добавленную рецензию
-
-            Console.WriteLine($"Review на грант Id={newReview.ApplicationId}.\n" +
-                $"Комментарий={newReview.Comment}\n" +
-                $"Score={newReview.Score}");
-
-            Console.WriteLine("\n======== Получение заявок для экспертизы (GetApplicationsForExpert) ========");
-
-            var applicationsForExpert = facade.GetApplicationsForExpert(expert.Id);
+            Console.WriteLine("\n======== 2. Получение заявок для экспертизы (GetApplicationsForExpert) ========");
+            var applicationsForExpert = facade.GetApplicationsForExpert(loggedExpert.Id);
             Console.WriteLine($"Найдено заявок для экспертизы: {applicationsForExpert.Count}");
             foreach (var app in applicationsForExpert)
             {
                 Console.WriteLine($"  - Заявка Id={app.Id}, Title=\"{app.Title}\", Status={app.Status}");
             }
 
-            Console.WriteLine("\n======== Одобрение гранта (ApproveApplication) ========");
+            GrantApplication applicationData = null;
+            if (applicationsForExpert.Count > 0)
+            {
+                var appId = applicationsForExpert[0].Id;
+                Console.WriteLine($"\n======== 3. Просмотр заявки и истории оценок (GetApplicationReviews) ========");
+                applicationData = facade.GetApplicationReviews(appId);
+                Console.WriteLine($"Просмотр заявки Id={applicationData.Id}: {applicationData.Title}");
+                Console.WriteLine($"История оценок: {applicationData.reviews.Count} шт.");
+                foreach (var review in applicationData.reviews)
+                {
+                    Console.WriteLine($"  - Оценка: {review.Score}, Комментарий: \"{review.Comment}\"");
+                }
+            }
 
-            facade.ApproveApplication(applicationData.Id);
+            if (applicationData != null)
+            {
+                Console.WriteLine("\n======== 4. Отправка новой оценки (SubmitReview) ========");
+                var applicationWithReview = facade.SubmitReview(
+                    loggedExpert.Id,
+                    10,
+                    "Хорошая идея для гранта!",
+                    applicationData.Id
+                );
+                Console.WriteLine("Экспертиза успешно отправлена.");
+            }
 
+            // ======== ВЫДАЧА ГРАНТА (инвестор) ========
+            Console.WriteLine("\n======== ВЫДАЧА ГРАНТА ========");
+
+            if (applicationData != null)
+            {
+                Console.WriteLine("\n======== Одобрение гранта (ApproveApplication) ========");
+                facade.ApproveApplication(applicationData.Id);
+                Console.WriteLine("Грант одобрен.");
+            }
+
+            // ======== СТАТИСТИКА ========
             Console.WriteLine("\n======== СТАТИСТИКА ГРАНТА ========");
 
             Console.WriteLine("\n======== Запрос общей статистики ========");
@@ -113,12 +125,12 @@ namespace GrantSystem.UI
             GrantStats grantStats = facade.getGrantStats("123");
             Console.WriteLine($"Финансовая статистика: Id={grantStats.InvestorId}, Grants={grantStats.GrantsCount}, Total={grantStats.TotalAmount}, AvgAmount={grantStats.AverageAmount}, UniqueApplicants={grantStats.UniqueApplicants}");
 
-            Console.WriteLine("\n======== Завершение экспертизы (FinalizeReview) ========");
-            var finalizedApplication = facade.FinalizeReview(applicationData.Id);
-            Console.WriteLine($"Финальный статус заявки: {finalizedApplication.Status}");
-
-            Console.WriteLine("\n======== ВЫДАЧА ГРАНТА ========\n");
-            facade.ApproveApplication(10);
+            if (applicationData != null)
+            {
+                Console.WriteLine("\n======== Завершение экспертизы (FinalizeReview) ========");
+                var finalizedApplication = facade.FinalizeReview(applicationData.Id);
+                Console.WriteLine($"Финальный статус заявки: {finalizedApplication.Status}");
+            }
         }
     }
 }
