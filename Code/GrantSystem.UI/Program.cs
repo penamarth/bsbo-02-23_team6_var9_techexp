@@ -41,7 +41,7 @@ namespace GrantSystem.UI
             // ======== УПРАВЛЕНИЕ ЗАЯВКОЙ (заявитель) ========
             Console.WriteLine("======== УПРАВЛЕНИЕ ЗАЯВКОЙ ========");
 
-            Console.WriteLine("\n======== Создание заявки (CreateApplication) ========");
+            Console.WriteLine("\n======== Создание заявки (OpenCreateApplicationForm) ========");
             GrantApplication newApplication = facade.CreateApplication(applicant.Id, new GrantApplication
             {
                 Title = "Новая заявка на грант",
@@ -50,7 +50,7 @@ namespace GrantSystem.UI
             });
             Console.WriteLine($"Создана заявка на грант: Id={newApplication.Id}, Title={newApplication.Title}, Status={newApplication.Status}");
 
-            Console.WriteLine("\n======== Верификация заявки (UpdateGrantApplication) ========");
+            Console.WriteLine("\n======== Верификация заявки (saveApplication) ========");
             newApplication.Status = "ReadyForReview";
             GrantApplication updatedApplication = facade.UpdateGrantApplication(1, newApplication);
             Console.WriteLine($"Обновлена заявка на грант: Id={updatedApplication.Id}, Title={updatedApplication.Title}, Status={updatedApplication.Status}");
@@ -58,6 +58,13 @@ namespace GrantSystem.UI
             Console.WriteLine("\n======== Отправка на экспертизу (SubmitApplication) ========");
             facade.SubmitApplication(newApplication.ApplicantId);
             Console.WriteLine($"Заявка Id={updatedApplication.Id} отправлена на экспертизу");
+
+            Console.WriteLine("\n======== Доработка заявки (editApplication) ========");
+            newApplication.Status = "Edit";
+            newApplication.Title = "Обновленный заголовок заявки";
+            GrantApplication editApplication = facade.UpdateGrantApplication(1, newApplication);
+            Console.WriteLine($"Доработка заявки на грант: Id={editApplication.Id}, Title={editApplication.Title}, Status={editApplication.Status}");
+            facade.SubmitApplication(newApplication.ApplicantId);
 
             // ======== УПРАВЛЕНИЕ ЭКСПЕРТИЗОЙ (эксперт) ========
             Console.WriteLine("\n======== УПРАВЛЕНИЕ ЭКСПЕРТИЗОЙ ========");

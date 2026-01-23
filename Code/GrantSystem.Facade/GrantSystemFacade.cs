@@ -87,7 +87,7 @@ namespace GrantSystem.Facade
 
             GrantApplication grantApplication = _appRepository.findById(applicantId);
 
-            grantApplication.Status = "UNDER_REVIEW";
+            grantApplication.Status = "onReview";
 
             GrantApplication updatedApplication = _appRepository.update(grantApplication);
 
