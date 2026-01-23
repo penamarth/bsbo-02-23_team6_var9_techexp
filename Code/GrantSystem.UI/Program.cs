@@ -100,6 +100,13 @@ namespace GrantSystem.UI
                 Console.WriteLine("Экспертиза успешно отправлена.");
             }
 
+            if (applicationData != null)
+            {
+                Console.WriteLine("\n======== Завершение экспертизы (FinalizeReview) ========");
+                var finalizedApplication = facade.FinalizeReview(applicationData.Id);
+                Console.WriteLine($"Финальный статус заявки: {finalizedApplication.Status}");
+            }
+
             // ======== ВЫДАЧА ГРАНТА (инвестор) ========
             Console.WriteLine("\n======== ВЫДАЧА ГРАНТА ========");
 
@@ -124,13 +131,6 @@ namespace GrantSystem.UI
             Console.WriteLine("\n======== Запрос финансовой статистики ========");
             GrantStats grantStats = facade.getGrantStats("123");
             Console.WriteLine($"Финансовая статистика: Id={grantStats.InvestorId}, Grants={grantStats.GrantsCount}, Total={grantStats.TotalAmount}, AvgAmount={grantStats.AverageAmount}, UniqueApplicants={grantStats.UniqueApplicants}");
-
-            if (applicationData != null)
-            {
-                Console.WriteLine("\n======== Завершение экспертизы (FinalizeReview) ========");
-                var finalizedApplication = facade.FinalizeReview(applicationData.Id);
-                Console.WriteLine($"Финальный статус заявки: {finalizedApplication.Status}");
-            }
         }
     }
 }
