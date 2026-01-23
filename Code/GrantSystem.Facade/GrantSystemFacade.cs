@@ -14,19 +14,22 @@ namespace GrantSystem.Facade
         private readonly IAppRepository _appRepository;
         private readonly IStatsService _statsService;
         private readonly INotifyService _notifyService;
+        private readonly IPaymentService _paymentService;
         private Expert _currentExpert;
 
         public GrantSystemFacade(
             IUserRepository<Expert> userRepository,
             IAppRepository appRepository,
             INotifyService notifyService,
-            IStatsService statsService
+            IStatsService statsService,
+            IPaymentService paymentService
         )
         {
             _userRepository = userRepository;
             _appRepository = appRepository;
             _statsService = statsService;
             _notifyService = notifyService;
+            _paymentService = paymentService;
         }
 
         public Expert Login(string email, string password)
@@ -126,6 +129,8 @@ namespace GrantSystem.Facade
             GrantApplication updatedApplication = _appRepository.update(grantApplication);
 
             _notifyService.sendNotification(grantApplication.ApplicantId, "Заявка ободрена");
+
+            _paymentService.processPayment(updatedApplication);
         }
 
         public GrantApplication SubmitReview(int expertId, int score, string comment, int applicationId)

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="INotifyService.cs" />
     <Compile Include="IAppRepository.cs" />
+    <Compile Include="IPaymentService.cs" />
     <Compile Include="IStatsService.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

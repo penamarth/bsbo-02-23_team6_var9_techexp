@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C9A905F2-5D26-41AD-AEF3-2A216071571B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GrantSystem.Services</RootNamespace>
-    <AssemblyName>GrantSystem.Services</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <ProjectGuid>{711E89A7-ADB0-4573-8DBE-A93B60814B80}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>GrantSystem.API</RootNamespace>
+    <AssemblyName>GrantSystem.API</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,24 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NotifyService.cs" />
-    <Compile Include="PaymentService.cs" />
+    <Compile Include="PaymentGatewayAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatsService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GrantSystem.Interfaces\GrantSystem.Interfaces.csproj">
-      <Project>{1806c82e-0e36-4f20-98cc-542dcd88a22e}</Project>
-      <Name>GrantSystem.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GrantSystem.Repositories\GrantSystem.Repositories.csproj">
-      <Project>{205f4ed5-07f0-489b-a458-12270af91cad}</Project>
-      <Name>GrantSystem.Repositories</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GrantSysytem.Domain\GrantSystem.Domain.csproj">
-      <Project>{5876ddb2-dbec-4888-bd32-4b6f661fad27}</Project>
-      <Name>GrantSystem.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

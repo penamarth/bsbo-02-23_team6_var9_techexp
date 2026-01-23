@@ -14,12 +14,14 @@ namespace GrantSystem.UI
             IUserRepository<Expert> expertRepository = new UserRepository<Expert>();
             IStatsService statsService = new StatsService(appRepository, expertRepository);
             INotifyService notifyService = new NotifyService();
+            IPaymentService paymentService = new PaymentService(appRepository, notifyService);
 
             var facade = new GrantSystemFacade(
                 expertRepository,
                 appRepository,
                 notifyService,
-                statsService
+                statsService,
+                paymentService
             );
 
             var expert = new Expert()
@@ -114,6 +116,9 @@ namespace GrantSystem.UI
             Console.WriteLine("\n======== Завершение экспертизы (FinalizeReview) ========");
             var finalizedApplication = facade.FinalizeReview(applicationData.Id);
             Console.WriteLine($"Финальный статус заявки: {finalizedApplication.Status}");
+
+            Console.WriteLine("\n======== ВЫДАЧА ГРАНТА ========\n");
+            facade.ApproveApplication(10);
         }
     }
 }

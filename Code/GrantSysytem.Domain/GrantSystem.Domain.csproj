@@ -55,6 +55,7 @@
     <Compile Include="Applicant.cs" />
     <Compile Include="Expert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="Review.cs" />
   </ItemGroup>
   <ItemGroup />
