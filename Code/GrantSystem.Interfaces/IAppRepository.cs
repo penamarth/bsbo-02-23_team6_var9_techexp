@@ -1,4 +1,4 @@
-﻿using GrantSysytem.Domain;
+using GrantSysytem.Domain;
 using System.Collections.Generic;
 
 namespace GrantSystem.Interfaces
@@ -19,5 +19,6 @@ namespace GrantSystem.Interfaces
         double getInvestorTotal(string id);
         double avgAmountByInvestor(string id);
         int getUniqueApplicants(string id);
+        void save(Grant grant);
     }
 }

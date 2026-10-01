@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace GrantSysytem.Domain
 {
@@ -9,5 +9,6 @@ namespace GrantSysytem.Domain
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Status { get; set; }
+        public int ApplicationId { get; set; }
     }
 }

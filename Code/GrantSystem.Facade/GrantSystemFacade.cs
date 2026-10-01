@@ -1,4 +1,4 @@
-﻿using GrantSystem.Interfaces;
+using GrantSystem.Interfaces;
 using GrantSystem.Repositories;
 using GrantSysytem.Domain;
 using System;
@@ -10,6 +10,7 @@ namespace GrantSystem.Facade
     public class GrantSystemFacade
     {
         private readonly IUserRepository<Expert> _userRepository;
+        private readonly IUserRepository<Applicant> _applicantRepository;
         private readonly IAppRepository _appRepository;
         private readonly IStatsService _statsService;
         private readonly INotifyService _notifyService;
@@ -17,12 +18,14 @@ namespace GrantSystem.Facade
 
         public GrantSystemFacade(
             IUserRepository<Expert> userRepository,
+            IUserRepository<Applicant> applicantRepository,
             IAppRepository appRepository,
             INotifyService notifyService,
             IStatsService statsService
         )
         {
             _userRepository = userRepository;
+            _applicantRepository = applicantRepository;
             _appRepository = appRepository;
             _statsService = statsService;
             _notifyService = notifyService;
@@ -51,7 +54,7 @@ namespace GrantSystem.Facade
             Console.WriteLine("=== Вызов GrantSystemFacade.CreateApplication() ===");
 
             IUserRepository<Applicant> userApplicantRepository = new UserRepository<Applicant>();
-            var user = userApplicantRepository.findById(applicantId); // получаем пользователя-заявителя по id
+            var user = userApplicantRepository.findById(applicantId);
 
             var newApplication = new GrantApplication
             {
@@ -97,7 +100,6 @@ namespace GrantSystem.Facade
 
             GrantApplication grantApplication = _appRepository.findById(applicantId);
 
-            // Мокаем данные гранта
             grantApplication.Id = 1;
             grantApplication.ApplicantId = 1;
             grantApplication.Title = "Новая заявка на грант";
@@ -108,23 +110,36 @@ namespace GrantSystem.Facade
             return grantApplication;
         }
 
-        public void ApproveApplication(int applicationId)
+        public Grant ApproveApplication(int appId, decimal amount)
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.ApproveApplication() ===");
 
-            GrantApplication grantApplication = _appRepository.findById(applicationId);
+            var application = _appRepository.findById(appId);
             
-            grantApplication.grant = new Grant()
+            if (application.Status != "APPROVED" || amount <= 0)
+                throw new InvalidOperationException("Заявка не одобрена или неверная сумма");
+            
+            var grant = new Grant()
             {
-                Amount = 100000,
+                Id = new Random().Next(1000, 9999),
+                ApplicationId = appId,
+                Amount = (float)amount,
                 StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Status = "Approved"
+                EndDate = DateTime.Now.AddYears(1),
+                Status = "APPROVED"
             };
-
-            GrantApplication updatedApplication = _appRepository.update(grantApplication);
-
-            _notifyService.sendNotification(grantApplication.ApplicantId, "Заявка ободрена");
+            
+            _appRepository.save(grant);
+            
+            application.Status = "GRANT_ISSUED";
+            _appRepository.update(application);
+            
+            var applicant = _applicantRepository.findById(application.ApplicantId);
+            _notifyService.sendNotification(applicant.Id, "Ваш грант одобрен");
+            
+            Console.WriteLine($"Грант создан: ID={grant.Id}, Сумма={grant.Amount}");
+            
+            return grant;
         }
 
         public GrantApplication SubmitReview(int expertId, int score, string comment, int applicationId)
@@ -133,7 +148,6 @@ namespace GrantSystem.Facade
 
             GrantApplication grantApplication = _appRepository.findById(applicationId);
 
-            // Убедимся, что список инициализирован
             if (grantApplication.reviews == null)
                 grantApplication.reviews = new List<Review>();
 
@@ -141,7 +155,6 @@ namespace GrantSystem.Facade
                 ? grantApplication.reviews.Max(r => r.Id) + 1 
                 : 1;
 
-            // Добавляем новую рецензию
             grantApplication.reviews.Add(new Review
             {
                 Id = newId,
@@ -169,7 +182,7 @@ namespace GrantSystem.Facade
         public GrantApplication GetApplicationReviews(int applicationId)
         {
             Console.WriteLine("=== Вызов GrantSystemFacade.GetApplicationReviews() ===");
-            return _appRepository.findById(applicationId); // reviews уже внутри
+            return _appRepository.findById(applicationId);
         }
 
         public ApplicationStats getApplicationStats()
